@@ -7,13 +7,13 @@
             to bottom,
             color-mix(in oklab, var(--color-neutral-950) 0%, transparent),
             color-mix(in oklab, var(--color-neutral-950) 100%, transparent)
-        ),
-        url('/images/noise.png');
+    ),
+    url('/images/noise.png');
     --color-primary: #2bdcd2;
     --color-primary-content: #171717;
     --color-secondary: #016968;
     --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-        'Noto Color Emoji';
+    'Noto Color Emoji';
 }
 
 @layer base {
@@ -36,6 +36,429 @@
     :not(pre) > code {
         @apply px-1 py-0.5 font-mono rounded bg-neutral-900 text-yellow-200;
         font-size: 0.9em;
+    }
+
+    html, body {
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        background: radial-gradient(ellipse at center, #d4c4b0 0%, #b8a691 40%, #9c8d7a 100%);
+        min-height: 100dvh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Georgia', serif;
+    }
+
+    .container {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        height: 100%;
+        min-height: 400px;
+        background: radial-gradient(ellipse at 40% 30%, #e8ddd1 0%, #d4c4b0 30%, #c0b09c 70%, #a69584 100%);
+        overflow: hidden;
+    }
+
+    /* Subtle film grain overlay */
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: radial-gradient(circle at 23% 31%, transparent 1px, rgba(0, 0, 0, 0.015) 1px),
+        radial-gradient(circle at 77% 43%, transparent 1px, rgba(255, 255, 255, 0.025) 1px),
+        radial-gradient(circle at 45% 67%, transparent 1px, rgba(0, 0, 0, 0.01) 1px),
+        radial-gradient(circle at 89% 23%, transparent 1px, rgba(0, 0, 0, 0.008) 1px);
+        background-size: 5px 5px, 7px 7px, 4px 4px, 6px 6px;
+        background-position: 0 0, 2px 1px, 4px 3px, 1px 2px;
+        opacity: 0.6;
+        pointer-events: none;
+        z-index: 10;
+    }
+
+    .bubbles-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        filter: contrast(0.95) saturate(0.85) brightness(1.02);
+        padding: 60px;
+        box-sizing: border-box;
+    }
+
+    .bubble {
+        position: absolute;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s ease;
+    }
+
+    .bubble:hover {
+        transform: scale(1.05);
+    }
+
+    .bubble-text {
+        font-size: 32px;
+        font-weight: bold;
+        color: rgba(255, 255, 255, 0.9);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        user-select: none;
+    }
+
+    /* Individual bubbles - desktop optimized */
+    .bubble-q, .bubble-s, .bubble-d, .bubble-e, .bubble-z {
+        width: 75px;
+        height: 75px;
+    }
+
+    .bubble-q {
+        background: radial-gradient(ellipse at 25% 25%,
+        rgba(210, 130, 125, 0.8) 0%,
+        rgba(195, 110, 105, 0.85) 40%,
+        rgba(180, 90, 85, 0.9) 65%,
+        rgba(165, 70, 65, 0.95) 100%);
+        top: 140px;
+        left: 80px;
+    }
+
+    .bubble-s {
+        background: radial-gradient(ellipse at 28% 28%,
+        rgba(225, 190, 120, 0.8) 0%,
+        rgba(205, 165, 95, 0.85) 45%,
+        rgba(185, 140, 75, 0.9) 70%,
+        rgba(160, 115, 60, 0.95) 100%);
+        top: 230px;
+        left: 95px;
+    }
+
+    .bubble-d {
+        background: radial-gradient(ellipse at 30% 30%,
+        rgba(140, 175, 155, 0.8) 0%,
+        rgba(120, 155, 135, 0.85) 50%,
+        rgba(100, 135, 115, 0.9) 75%,
+        rgba(85, 120, 100, 0.95) 100%);
+        top: 320px;
+        left: 110px;
+    }
+
+    .bubble-e {
+        background: radial-gradient(ellipse at 32% 25%,
+        rgba(130, 150, 180, 0.8) 0%,
+        rgba(110, 130, 160, 0.85) 45%,
+        rgba(95, 115, 145, 0.9) 70%,
+        rgba(80, 100, 130, 0.95) 100%);
+        top: 410px;
+        left: 125px;
+    }
+
+    .bubble-z {
+        background: radial-gradient(ellipse at 28% 32%,
+        rgba(155, 125, 165, 0.8) 0%,
+        rgba(135, 105, 145, 0.85) 45%,
+        rgba(120, 90, 130, 0.9) 70%,
+        rgba(105, 75, 115, 0.95) 100%);
+        top: 500px;
+        left: 140px;
+    }
+
+    /* Word continuations - scaled for desktop */
+    .word-continuation {
+        position: absolute;
+        font-size: 32px;
+        font-weight: bold;
+        color: #3d3325;
+        text-shadow: 0 1px 3px rgba(255, 255, 255, 0.4);
+        display: flex;
+        align-items: center;
+        user-select: none;
+        line-height: 1;
+    }
+
+    .word-queer {
+        top: 162px;
+        left: 165px;
+    }
+
+    .word-swing {
+        top: 250px;
+        left: 175px;
+    }
+
+    .word-dance {
+        top: 343px;
+        left: 198px;
+    }
+
+    .word-exchange {
+        top: 432px;
+        left: 207px;
+    }
+
+    .word-zurich {
+        top: 523px;
+        left: 226px;
+    }
+
+    /* Date info positioned to the right - desktop sized */
+    .info-section {
+        position: absolute;
+        top: 50%;
+        right: 80px;
+        transform: translateY(-50%);
+        text-align: right;
+        z-index: 20;
+        color: #3d3325;
+    }
+
+    .date-text {
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 12px;
+        text-shadow: 0 1px 3px rgba(255, 255, 255, 0.4);
+        letter-spacing: 0.5px;
+    }
+
+    .save-date {
+        font-size: 20px;
+        opacity: 0.75;
+        font-style: italic;
+        margin-bottom: 8px;
+    }
+
+    .more-info {
+        font-size: 18px;
+        opacity: 0.6;
+    }
+
+    /* SVG noise for authentic grain */
+    .svg-grain {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.08;
+        pointer-events: none;
+        z-index: 5;
+        mix-blend-mode: overlay;
+    }
+
+    /* Mobile Support - maintain design integrity */
+    @media (max-width: 768px) {
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 100%;
+            width: 100vw;
+            height: 100dvh;
+            min-height: 100dvh;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .content-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 0 5px;
+            box-sizing: border-box;
+        }
+
+        .bubbles-container {
+            padding: 0;
+            position: relative;
+            width: 100%;
+            height: 500px;
+        }
+
+        /* Scale down bubbles but maintain good proportions and spacing */
+        .bubble-q, .bubble-s, .bubble-d, .bubble-e, .bubble-z {
+            width: 90px;
+            height: 90px;
+        }
+
+        .bubble-q {
+            top: 0;
+            left: 50px;
+        }
+
+        .bubble-s {
+            top: 100px;
+            left: 60px;
+        }
+
+        .bubble-d {
+            top: 200px;
+            left: 70px;
+        }
+
+        .bubble-e {
+            top: 300px;
+            left: 80px;
+        }
+
+        .bubble-z {
+            top: 400px;
+            left: 90px;
+        }
+
+        /* Scale bubble text */
+        .bubble-text {
+            font-size: 48px;
+        }
+
+        /* Word continuations - maintain consistent spacing from bubbles */
+        .word-continuation {
+            font-size: 48px;
+        }
+
+        .word-queer {
+            top: 25px;
+            left: 145px;
+        }
+
+        .word-swing {
+            top: 125px;
+            left: 155px;
+        }
+
+        .word-dance {
+            top: 225px;
+            left: 165px;
+        }
+
+        .word-exchange {
+            top: 325px;
+            left: 172px;
+        }
+
+        .word-zurich {
+            top: 425px;
+            left: 182px;
+        }
+
+        /* Keep info section right-aligned and well-positioned */
+        .info-section {
+            position: relative;
+            text-align: right;
+            margin-top: 120px;
+            box-sizing: border-box;
+        }
+
+        .date-text {
+            margin-bottom: 10px;
+        }
+
+        .save-date {
+            margin-bottom: 6px;
+        }
+
+        .more-info {
+        }
+    }
+
+    @media (max-width: 480px) {
+        .content-wrapper {
+            max-width: 100%;
+            padding: 0 5px;
+            box-sizing: border-box;
+        }
+
+        .bubbles-container {
+            height: 480px;
+            padding: 0;
+        }
+
+        /* Slightly smaller for very small screens but still well-spaced */
+        .bubble-q, .bubble-s, .bubble-d, .bubble-e, .bubble-z {
+            width: 80px;
+            height: 80px;
+        }
+
+        .bubble-q {
+            top: 0;
+            left: 40px;
+        }
+
+        .bubble-s {
+            top: 90px;
+            left: 50px;
+        }
+
+        .bubble-d {
+            top: 180px;
+            left: 60px;
+        }
+
+        .bubble-e {
+            top: 270px;
+            left: 70px;
+        }
+
+        .bubble-z {
+            top: 360px;
+            left: 80px;
+        }
+
+        .bubble-text {
+            font-size: 48px;
+        }
+
+        .word-continuation {
+            font-size: 48px;
+        }
+
+        .word-queer {
+            top: 20px;
+            left: 125px;
+        }
+
+        .word-swing {
+            top: 110px;
+            left: 135px;
+        }
+
+        .word-dance {
+            top: 200px;
+            left: 145px;
+        }
+
+        .word-exchange {
+            top: 290px;
+            left: 152px;
+        }
+
+        .word-zurich {
+            top: 380px;
+            left: 163px;
+        }
+
+        .date-text {
+        }
+
+        .save-date {
+        }
+
+        .more-info {
+        }
+
+        .info-section {
+            margin-top: 120px;
+        }
     }
 }
 
@@ -94,12 +517,14 @@
             outline: 2px solid var(--color-gray-400);
             outline-offset: 1px;
         }
+
         &:focus-visible {
             .diff-resizer {
                 min-width: 80cqi;
                 max-width: 80cqi;
             }
         }
+
         &:has(.diff-item-2:focus-visible) {
             .diff-resizer {
                 min-width: 20cqi;
@@ -134,8 +559,9 @@
             pointer-events: none;
             z-index: 2;
             box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--color-gray-900) 5%, transparent),
-                0 1px 3px 0 color-mix(in oklab, var(--color-gray-900) 20%, transparent);
+            0 1px 3px 0 color-mix(in oklab, var(--color-gray-900) 20%, transparent);
         }
+
         @supports (-webkit-overflow-scrolling: touch) and (overflow: -webkit-paged-x) {
             &:after {
                 content: none;
