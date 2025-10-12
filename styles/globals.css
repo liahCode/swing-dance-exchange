@@ -1,719 +1,751 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-@import 'tailwindcss';
-
-@theme {
-    --background-image-noise: linear-gradient(
-            to bottom,
-            color-mix(in oklab, var(--color-neutral-950) 0%, transparent),
-            color-mix(in oklab, var(--color-neutral-950) 100%, transparent)
-    ),
-    url('/images/noise.png');
-    --color-primary: #2bdcd2;
-    --color-primary-content: #171717;
-    --color-secondary: #016968;
-    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
+/* Accessibility */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
 }
 
-@layer base {
+/* Layout */
+body {
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(ellipse at center, #d4c4b0 0%, #b8a691 40%, #9c8d7a 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Georgia', serif;
+}
+
+/* Header and Navigation */
+header {
+    width: 100%;
+    padding: 1rem 2rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+header nav li {
+    list-style: none;
+}
+
+header nav a {
+    text-decoration: none;
+    color: #3d3325;
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+
+header nav a:hover {
+    opacity: 0.7;
+}
+
+/* Page styles */
+.page-container {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+@media (min-width: 640px) {
+    .page-container {
+        gap: 4rem;
+    }
+}
+
+.page-title {
+    font-size: 2.25rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    letter-spacing: -0.025em;
+}
+
+@media (min-width: 640px) {
+    .page-title {
+        font-size: 3rem;
+    }
+}
+
+/* Headings */
+h1 {
+    font-size: 2.25rem;
+    font-weight: bold;
+    letter-spacing: -0.025em;
+}
+
+@media (min-width: 640px) {
     h1 {
-        @apply text-4xl font-bold tracking-tight sm:text-5xl;
+        font-size: 3rem;
     }
+}
 
+h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+@media (min-width: 640px) {
     h2 {
-        @apply text-2xl font-bold sm:text-3xl;
+        font-size: 1.875rem;
     }
+}
 
-    h3 {
-        @apply text-xl font-bold;
-    }
+h3 {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
 
-    a:not(.btn) {
-        @apply underline transition hover:opacity-80;
-    }
+/* Links */
+a:not(.btn) {
+    text-decoration: underline;
+    transition: opacity 0.2s;
+}
 
-    :not(pre) > code {
-        @apply px-1 py-0.5 font-mono rounded bg-neutral-900 text-yellow-200;
-        font-size: 0.9em;
-    }
+a:not(.btn):hover {
+    opacity: 0.8;
+}
 
-    html, body {
-        height: 100%;
-    }
+/* Code blocks */
+:not(pre) > code {
+    padding: 0.125rem 0.25rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    border-radius: 0.25rem;
+    background-color: #171717;
+    color: #fef08a;
+    font-size: 0.9em;
+}
 
+html, body {
+    height: 100%;
+}
+
+/* Main content */
+main {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Home page specific - center content */
+main .home-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bubbles-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    filter: contrast(0.95) saturate(0.85) brightness(1.02);
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row; /* Changed from column to row */
+    justify-content: center;
+    align-items: center; /* Changed from flex-start to center */
+    gap: 5px;
+}
+
+.bubble-line {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+.bubble-line:nth-child(1) {
+    margin-left: 0;
+}
+
+.bubble-line:nth-child(2) {
+    margin-left: 15px;
+}
+
+.bubble-line:nth-child(3) {
+    margin-left: 30px;
+}
+
+.bubble-line:nth-child(4) {
+    margin-left: 45px;
+}
+
+.bubble-line:nth-child(5) {
+    margin-left: 60px;
+}
+
+.bubble {
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
+
+.bubble:hover {
+    transform: scale(1.05);
+}
+
+.bubble-text {
+    font-size: 32px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    user-select: none;
+}
+
+/* Individual bubbles - desktop optimized */
+.bubble {
+    width: 75px;
+    height: 75px;
+    margin-right: 6px;
+}
+
+.bubble-q {
+    background: radial-gradient(ellipse at 25% 25%,
+    rgba(210, 130, 125, 0.8) 0%,
+    rgba(195, 110, 105, 0.85) 40%,
+    rgba(180, 90, 85, 0.9) 65%,
+    rgba(165, 70, 65, 0.95) 100%);
+}
+
+.bubble-s {
+    background: radial-gradient(ellipse at 28% 28%,
+    rgba(225, 190, 120, 0.8) 0%,
+    rgba(205, 165, 95, 0.85) 45%,
+    rgba(185, 140, 75, 0.9) 70%,
+    rgba(160, 115, 60, 0.95) 100%);
+}
+
+.bubble-d {
+    background: radial-gradient(ellipse at 30% 30%,
+    rgba(140, 175, 155, 0.8) 0%,
+    rgba(120, 155, 135, 0.85) 50%,
+    rgba(100, 135, 115, 0.9) 75%,
+    rgba(85, 120, 100, 0.95) 100%);
+}
+
+.bubble-e {
+    background: radial-gradient(ellipse at 32% 25%,
+    rgba(130, 150, 180, 0.8) 0%,
+    rgba(110, 130, 160, 0.85) 45%,
+    rgba(95, 115, 145, 0.9) 70%,
+    rgba(80, 100, 130, 0.95) 100%);
+}
+
+.bubble-z {
+    background: radial-gradient(ellipse at 28% 32%,
+    rgba(155, 125, 165, 0.8) 0%,
+    rgba(135, 105, 145, 0.85) 45%,
+    rgba(120, 90, 130, 0.9) 70%,
+    rgba(105, 75, 115, 0.95) 100%);
+}
+
+/* Word continuations - scaled for desktop */
+.word-continuation {
+    font-size: 32px;
+    font-weight: bold;
+    color: #3d3325;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.4);
+    display: flex;
+    align-items: center;
+    user-select: none;
+    line-height: 1;
+}
+
+/* Date info positioned to the right - desktop sized */
+.info-section {
+    position: absolute;
+    top: 50%;
+    right: 80px;
+    transform: translateY(-50%);
+    text-align: right;
+    z-index: 20;
+    color: #3d3325;
+}
+
+.date-text {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.5px;
+}
+
+.save-date {
+    font-size: 20px;
+    opacity: 0.75;
+    font-style: italic;
+    margin-bottom: 8px;
+}
+
+.more-info {
+    font-size: 18px;
+    opacity: 0.6;
+}
+
+/* Mobile Support - responsive flexbox layout */
+@media (max-width: 768px) {
     body {
-        margin: 0;
         padding: 0;
-        background: radial-gradient(ellipse at center, #d4c4b0 0%, #b8a691 40%, #9c8d7a 100%);
-        min-height: 100vh;
-        max-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: 'Georgia', serif;
-        overflow: hidden;
+        margin: 0;
+        overflow-y: auto;
+        max-height: none;
     }
 
-    .container {
+    .content-wrapper {
         position: relative;
         width: 100%;
-        max-width: 800px;
+        max-width: 100%;
         height: 100%;
-        min-height: 100vh;
-        background: radial-gradient(ellipse at 40% 30%, #e8ddd1 0%, #d4c4b0 30%, #c0b09c 70%, #a69584 100%);
-        overflow: hidden;
-    }
-
-    /* Subtle film grain overlay */
-    .container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: radial-gradient(circle at 23% 31%, transparent 1px, rgba(0, 0, 0, 0.015) 1px),
-        radial-gradient(circle at 77% 43%, transparent 1px, rgba(255, 255, 255, 0.025) 1px),
-        radial-gradient(circle at 45% 67%, transparent 1px, rgba(0, 0, 0, 0.01) 1px),
-        radial-gradient(circle at 89% 23%, transparent 1px, rgba(0, 0, 0, 0.008) 1px);
-        background-size: 5px 5px, 7px 7px, 4px 4px, 6px 6px;
-        background-position: 0 0, 2px 1px, 4px 3px, 1px 2px;
-        opacity: 0.6;
-        pointer-events: none;
-        z-index: 10;
-    }
-
-    .bubbles-container {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        filter: contrast(0.95) saturate(0.85) brightness(1.02);
-        padding: 60px;
-        box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        gap: 20px;
+        padding: 40px 5px 20px 5px;
+        box-sizing: border-box;
+        overflow-x: hidden;
     }
 
-    .bubble-line {
-        display: flex;
-        align-items: center;
-        position: relative;
-        width: 100%;
+
+    .bubbles-container {
+        padding: 20px 0 0 0;
+        gap: min(15px, 3vh);
+        flex: 0 1 auto;
+        overflow: visible;
     }
 
     .bubble-line:nth-child(1) {
-        margin-left: 0px;
+        margin-left: 35px;
     }
 
     .bubble-line:nth-child(2) {
-        margin-left: 15px;
+        margin-left: 50px;
     }
 
     .bubble-line:nth-child(3) {
-        margin-left: 30px;
+        margin-left: 65px;
     }
 
     .bubble-line:nth-child(4) {
-        margin-left: 45px;
+        margin-left: 80px;
     }
 
     .bubble-line:nth-child(5) {
-        margin-left: 60px;
+        margin-left: 95px;
     }
 
+    /* Scale down bubbles for mobile */
     .bubble {
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: transform 0.3s ease;
-        flex-shrink: 0;
+        width: 80px;
+        height: 80px;
+        margin-right: 2px;
     }
 
-    .bubble:hover {
-        transform: scale(1.05);
-    }
-
+    /* Scale bubble text */
     .bubble-text {
-        font-size: 32px;
-        font-weight: bold;
-        color: rgba(255, 255, 255, 0.9);
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        user-select: none;
+        font-size: min(42px, 7vw);
     }
 
-    /* Individual bubbles - desktop optimized */
-    .bubble {
-        width: 75px;
-        height: 75px;
-        margin-right: 6px;
-    }
-
-    .bubble-q {
-        background: radial-gradient(ellipse at 25% 25%,
-        rgba(210, 130, 125, 0.8) 0%,
-        rgba(195, 110, 105, 0.85) 40%,
-        rgba(180, 90, 85, 0.9) 65%,
-        rgba(165, 70, 65, 0.95) 100%);
-    }
-
-    .bubble-s {
-        background: radial-gradient(ellipse at 28% 28%,
-        rgba(225, 190, 120, 0.8) 0%,
-        rgba(205, 165, 95, 0.85) 45%,
-        rgba(185, 140, 75, 0.9) 70%,
-        rgba(160, 115, 60, 0.95) 100%);
-    }
-
-    .bubble-d {
-        background: radial-gradient(ellipse at 30% 30%,
-        rgba(140, 175, 155, 0.8) 0%,
-        rgba(120, 155, 135, 0.85) 50%,
-        rgba(100, 135, 115, 0.9) 75%,
-        rgba(85, 120, 100, 0.95) 100%);
-    }
-
-    .bubble-e {
-        background: radial-gradient(ellipse at 32% 25%,
-        rgba(130, 150, 180, 0.8) 0%,
-        rgba(110, 130, 160, 0.85) 45%,
-        rgba(95, 115, 145, 0.9) 70%,
-        rgba(80, 100, 130, 0.95) 100%);
-    }
-
-    .bubble-z {
-        background: radial-gradient(ellipse at 28% 32%,
-        rgba(155, 125, 165, 0.8) 0%,
-        rgba(135, 105, 145, 0.85) 45%,
-        rgba(120, 90, 130, 0.9) 70%,
-        rgba(105, 75, 115, 0.95) 100%);
-    }
-
-    /* Word continuations - scaled for desktop */
+    /* Word continuations - responsive sizing */
     .word-continuation {
-        font-size: 32px;
-        font-weight: bold;
-        color: #3d3325;
-        text-shadow: 0 1px 3px rgba(255, 255, 255, 0.4);
-        display: flex;
-        align-items: center;
-        user-select: none;
-        line-height: 1;
+        font-size: min(42px, 7vw);
     }
 
-    /* Main content layout for desktop */
-    .main-content {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        display: flex;
-    }
-
-    /* Date info positioned to the right - desktop sized */
+    /* Info section - MUST be visible */
     .info-section {
-        position: absolute;
-        top: 50%;
-        right: 80px;
-        transform: translateY(-50%);
+        position: relative;
         text-align: right;
-        z-index: 20;
-        color: #3d3325;
+        margin-top: 140px;
+        padding: 15px 5px 20px 25px;
+        flex-shrink: 0;
+        display: block;
+        width: 100%;
     }
 
     .date-text {
-        font-size: 36px;
-        font-weight: bold;
-        margin-bottom: 12px;
-        text-shadow: 0 1px 3px rgba(255, 255, 255, 0.4);
-        letter-spacing: 0.5px;
+        font-size: min(40px, 8vw);
+        margin-bottom: 10px;
     }
 
     .save-date {
-        font-size: 20px;
-        opacity: 0.75;
-        font-style: italic;
-        margin-bottom: 8px;
+        font-size: min(24px, 5vw);
+        margin-bottom: 6px;
     }
 
     .more-info {
-        font-size: 18px;
-        opacity: 0.6;
+        font-size: min(20px, 4.5vw);
     }
-
-    /* SVG noise for authentic grain */
-    .svg-grain {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0.08;
-        pointer-events: none;
-        z-index: 5;
-        mix-blend-mode: overlay;
-    }
-
-    /* Mobile Support - responsive flexbox layout */
-    @media (max-width: 768px) {
-        body {
-            padding: 0;
-            margin: 0;
-            overflow-y: auto;
-            max-height: none;
-        }
-
-        .container {
-            max-width: 100%;
-            width: 100vw;
-            height: auto;
-            min-height: 100vh;
-            border-radius: 0;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            overflow: visible;
-        }
-
-        .content-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            padding: 40px 5px 20px 5px;
-            box-sizing: border-box;
-            overflow-x: hidden;
-        }
-
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            min-height: 100%;
-        }
-
-        .bubbles-container {
-            padding: 40px 0 0 0;
-            gap: min(15px, 3vh);
-            flex: 0 1 auto;
-            overflow: visible;
-        }
-
-        .bubble-line:nth-child(1) {
-            margin-left: 35px;
-        }
-
-        .bubble-line:nth-child(2) {
-            margin-left: 50px;
-        }
-
-        .bubble-line:nth-child(3) {
-            margin-left: 65px;
-        }
-
-        .bubble-line:nth-child(4) {
-            margin-left: 80px;
-        }
-
-        .bubble-line:nth-child(5) {
-            margin-left: 95px;
-        }
-
-        /* Scale down bubbles for mobile */
-        .bubble {
-            width: 80px;
-            height: 80px;
-            margin-right: 2px;
-        }
-
-        /* Scale bubble text */
-        .bubble-text {
-            font-size: min(42px, 7vw);
-        }
-
-        /* Word continuations - responsive sizing */
-        .word-continuation {
-            font-size: min(42px, 7vw);
-        }
-
-        /* Info section - MUST be visible */
-        .info-section {
-            position: relative;
-            text-align: right;
-            margin-top: 140px;
-            padding: 15px 5px 20px 25px;
-            flex-shrink: 0;
-            display: block;
-            width: 100%;
-        }
-
-        .date-text {
-            font-size: min(40px, 8vw);
-            margin-bottom: 10px;
-        }
-
-        .save-date {
-            font-size: min(24px, 5vw);
-            margin-bottom: 6px;
-        }
-
-        .more-info {
-            font-size: min(20px, 4.5vw);
-        }
-    }
-
-    /* Mobile landscape general - ensure info section visible */
-    @media (max-width: 768px) and (orientation: landscape) {
-        .info-section {
-            display: block !important;
-            position: relative !important;
-            margin-top: 80px;
-            margin-left: 20px;
-            padding: 10px 5px 10px 25px;
-            flex-shrink: 0;
-            transform: none !important;
-        }
-    }
-
-    /* Landscape mode - critical for small height screens */
-    @media (orientation: landscape) and (max-height: 500px) {
-        .main-content {
-            flex-direction: row;
-            align-items: center;
-        }
-
-        .bubbles-container {
-            gap: min(8px, 1.5vh);
-            padding: 30px 10px 10px 10px;
-            flex: 1;
-        }
-
-        .bubble {
-            width: min(50px, 8vh);
-            height: min(50px, 8vh);
-        }
-
-        .bubble-text {
-            font-size: min(24px, 4vh);
-        }
-
-        .word-continuation {
-            font-size: min(24px, 4vh);
-        }
-
-        .bubble-line:nth-child(1) {
-            margin-left: 25px;
-        }
-
-        .bubble-line:nth-child(2) {
-            margin-left: 30px;
-        }
-
-        .bubble-line:nth-child(3) {
-            margin-left: 35px;
-        }
-
-        .bubble-line:nth-child(4) {
-            margin-left: 40px;
-        }
-
-        .bubble-line:nth-child(5) {
-            margin-left: 45px;
-        }
-
-        .info-section {
-            position: relative;
-            margin-top: 60px;
-            margin-left: 20px;
-            padding: 0 5px 10px 25px;
-            flex-shrink: 0;
-            transform: none;
-        }
-
-        .date-text {
-            font-size: min(24px, 4vh);
-            margin-bottom: 6px;
-        }
-
-        .save-date {
-            font-size: min(16px, 3vh);
-            margin-bottom: 3px;
-        }
-
-        .more-info {
-            font-size: min(14px, 2.5vh);
-        }
-    }
-
-    /* Very small screens - ensure everything fits */
-    @media (max-width: 380px) {
-        .content-wrapper {
-            padding: 30px 5px 15px 5px;
-        }
-
-        .bubbles-container {
-            gap: min(12px, 2.5vh);
-            padding-top: 30px;
-        }
-
-        .bubble {
-            width: 65px;
-            height: 65px;
-            margin-right: 1px;
-        }
-
-        .bubble-text {
-            font-size: min(32px, 8vw);
-        }
-
-        .word-continuation {
-            font-size: min(32px, 8vw);
-        }
-
-        .bubble-line:nth-child(1) {
-            margin-left: 25px;
-        }
-
-        .bubble-line:nth-child(2) {
-            margin-left: 40px;
-        }
-
-        .bubble-line:nth-child(3) {
-            margin-left: 55px;
-        }
-
-        .bubble-line:nth-child(4) {
-            margin-left: 70px;
-        }
-
-        .bubble-line:nth-child(5) {
-            margin-left: 85px;
-        }
-
-        .date-text {
-            font-size: min(36px, 9vw);
-            margin-bottom: 8px;
-        }
-
-        .save-date {
-            font-size: min(20px, 5.5vw);
-            margin-bottom: 4px;
-        }
-
-        .more-info {
-            font-size: min(18px, 5vw);
-        }
-
-        .info-section {
-            margin-top: 80px;
-        }
-    }
-
-    /* Extreme height constraints */
-    @media (max-height: 400px) {
-        .content-wrapper {
-            padding: 15px 5px 5px 5px;
-        }
-
-        .main-content {
-            flex-direction: row;
-            align-items: center;
-        }
-
-        .bubbles-container {
-            gap: min(5px, 1vh);
-            padding: 20px 5px 5px 5px;
-            flex: 1;
-        }
-
-        .bubble {
-            width: min(40px, 6vh);
-            height: min(40px, 6vh);
-        }
-
-        .bubble-text {
-            font-size: min(20px, 3vh);
-        }
-
-        .word-continuation {
-            font-size: min(20px, 3vh);
-        }
-
-        .bubble-line:nth-child(1) {
-            margin-left: 22px;
-        }
-
-        .bubble-line:nth-child(2) {
-            margin-left: 24px;
-        }
-
-        .bubble-line:nth-child(3) {
-            margin-left: 26px;
-        }
-
-        .bubble-line:nth-child(4) {
-            margin-left: 28px;
-        }
-
-        .bubble-line:nth-child(5) {
-            margin-left: 30px;
-        }
-
-        .info-section {
-            position: relative;
-            margin-top: 40px;
-            margin-left: 15px;
-            padding: 0 5px 5px 25px;
-            flex-shrink: 0;
-            transform: none;
-        }
-
-        .date-text {
-            font-size: min(20px, 3.5vh);
-            margin-bottom: 3px;
-        }
-
-        .save-date {
-            font-size: min(14px, 2.5vh);
-            margin-bottom: 2px;
-        }
-
-        .more-info {
-            font-size: min(12px, 2vh);
-        }
-    }
-
-    /* Fallback to ensure info section is always visible on mobile */
-    @media (max-width: 768px) {
-        .info-section {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-        }
-    }
-
 }
 
-@layer components {
-    .markdown {
-        > * {
-            @apply my-4;
-        }
+/* Mobile landscape general - ensure info section visible */
+@media (max-width: 768px) and (orientation: landscape) {
+    .info-section {
+        display: block !important;
+        position: relative !important;
+        margin-top: 80px;
+        margin-left: 20px;
+        padding: 10px 5px 10px 25px;
+        flex-shrink: 0;
+        transform: none !important;
+    }
+}
 
-        :where(h1, h2) {
-            @apply mt-12 mb-6;
-        }
-
-        > :first-child {
-            @apply mt-0;
-        }
-
-        > :last-child {
-            @apply mb-0;
-        }
+/* Landscape mode - critical for small height screens */
+@media (orientation: landscape) and (max-height: 500px) {
+    .bubbles-container {
+        gap: min(8px, 1.5vh);
+        padding: 20px 10px 10px 10px;
+        flex: 1;
     }
 
-    .btn {
-        @apply inline-flex items-center justify-center gap-2 font-bold text-center no-underline transition-colors cursor-pointer bg-primary text-primary-content;
-        padding: var(--btn-py, 0.875rem) var(--btn-px, 1.25rem);
-        font-size: var(--btn-font-size, 0.875rem);
-        border-radius: var(--btn-border-radius, 0.25rem);
-
-        &:hover {
-            @apply bg-primary/85;
-        }
-
-        &:disabled {
-            @apply cursor-default text-neutral-400 bg-neutral-700;
-        }
+    .bubble {
+        width: min(50px, 8vh);
+        height: min(50px, 8vh);
     }
 
-    .btn-lg {
-        --btn-font-size: 1.125rem;
-        --btn-px: 1.5rem;
-        --btn-py: 1.125rem;
+    .bubble-text {
+        font-size: min(24px, 4vh);
     }
 
-    .input {
-        @apply px-4 py-3 text-sm border rounded-sm border-neutral-300 text-neutral-900 focus:border-primary focus:outline-3 focus:outline-primary/30;
+    .word-continuation {
+        font-size: min(24px, 4vh);
     }
 
-    .diff {
-        direction: ltr;
-        container-type: inline-size;
-        grid-template-columns: auto 1fr;
-
-        &:focus-visible,
-        &:has(.diff-item-1:focus),
-        &:has(.diff-item-2:focus) {
-            outline: 2px solid var(--color-gray-400);
-            outline-offset: 1px;
-        }
-
-        &:focus-visible {
-            .diff-resizer {
-                min-width: 80cqi;
-                max-width: 80cqi;
-            }
-        }
-
-        &:has(.diff-item-2:focus-visible) {
-            .diff-resizer {
-                min-width: 20cqi;
-                max-width: 20cqi;
-            }
-        }
+    .bubble-line:nth-child(1) {
+        margin-left: 25px;
     }
 
-    .diff-resizer {
-        width: 50cqi;
-        max-width: calc(100cqi - 1rem);
-        transform: scaleY(3) translate(0.35rem, 0.08rem);
-        transform-origin: 100% 100%;
-        clip-path: inset(calc(100% - 0.75rem) 0 0 calc(100% - 0.75rem));
-        transition: min-width 0.3s ease-out, max-width 0.3s ease-out;
+    .bubble-line:nth-child(2) {
+        margin-left: 30px;
     }
 
-    .diff-item-2 {
-        &:after {
-            content: '';
-            width: 1.25rem;
-            height: 1.875rem;
-            position: absolute;
-            top: 50%;
-            right: 1px;
-            bottom: 0;
-            translate: 50% -50%;
-            background: color-mix(in oklab, var(--color-white) 50%, transparent);
-            border-radius: 9999px;
-            border: 2px solid var(--color-white);
-            backdrop-filter: blur(8px);
-            pointer-events: none;
-            z-index: 2;
-            box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--color-gray-900) 5%, transparent),
-            0 1px 3px 0 color-mix(in oklab, var(--color-gray-900) 20%, transparent);
-        }
-
-        @supports (-webkit-overflow-scrolling: touch) and (overflow: -webkit-paged-x) {
-            &:after {
-                content: none;
-            }
-        }
+    .bubble-line:nth-child(3) {
+        margin-left: 35px;
     }
 
-    .diff-item-1,
-    .diff-item-2 {
-        > * {
-            height: 100%;
-            width: 100cqi;
-            position: absolute;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-        }
+    .bubble-line:nth-child(4) {
+        margin-left: 40px;
+    }
+
+    .bubble-line:nth-child(5) {
+        margin-left: 45px;
+    }
+
+    .info-section {
+        position: relative;
+        margin-top: 60px;
+        margin-left: 20px;
+        padding: 0 5px 10px 25px;
+        flex-shrink: 0;
+        transform: none;
+    }
+
+    .date-text {
+        font-size: min(24px, 4vh);
+        margin-bottom: 6px;
+    }
+
+    .save-date {
+        font-size: min(16px, 3vh);
+        margin-bottom: 3px;
+    }
+
+    .more-info {
+        font-size: min(14px, 2.5vh);
+    }
+}
+
+/* Very small screens - ensure everything fits */
+@media (max-width: 380px) {
+    .content-wrapper {
+        padding: 30px 5px 15px 5px;
+    }
+
+    .bubbles-container {
+        gap: min(12px, 2.5vh);
+        padding-top: 20px;
+    }
+
+    .bubble {
+        width: 65px;
+        height: 65px;
+        margin-right: 1px;
+    }
+
+    .bubble-text {
+        font-size: min(32px, 8vw);
+    }
+
+    .word-continuation {
+        font-size: min(32px, 8vw);
+    }
+
+    .bubble-line:nth-child(1) {
+        margin-left: 25px;
+    }
+
+    .bubble-line:nth-child(2) {
+        margin-left: 40px;
+    }
+
+    .bubble-line:nth-child(3) {
+        margin-left: 55px;
+    }
+
+    .bubble-line:nth-child(4) {
+        margin-left: 70px;
+    }
+
+    .bubble-line:nth-child(5) {
+        margin-left: 85px;
+    }
+
+    .date-text {
+        font-size: min(36px, 9vw);
+        margin-bottom: 8px;
+    }
+
+    .save-date {
+        font-size: min(20px, 5.5vw);
+        margin-bottom: 4px;
+    }
+
+    .more-info {
+        font-size: min(18px, 5vw);
+    }
+
+    .info-section {
+        margin-top: 80px;
+    }
+}
+
+/* Extreme height constraints */
+@media (max-height: 400px) {
+    .content-wrapper {
+        padding: 15px 5px 5px 5px;
+    }
+
+    .bubbles-container {
+        gap: min(5px, 1vh);
+        padding: 20px 5px 5px 5px;
+        flex: 1;
+    }
+
+    .bubble {
+        width: min(40px, 6vh);
+        height: min(40px, 6vh);
+    }
+
+    .bubble-text {
+        font-size: min(20px, 3vh);
+    }
+
+    .word-continuation {
+        font-size: min(20px, 3vh);
+    }
+
+    .bubble-line:nth-child(1) {
+        margin-left: 22px;
+    }
+
+    .bubble-line:nth-child(2) {
+        margin-left: 24px;
+    }
+
+    .bubble-line:nth-child(3) {
+        margin-left: 26px;
+    }
+
+    .bubble-line:nth-child(4) {
+        margin-left: 28px;
+    }
+
+    .bubble-line:nth-child(5) {
+        margin-left: 30px;
+    }
+
+    .info-section {
+        position: relative;
+        margin-top: 40px;
+        margin-left: 15px;
+        padding: 0 5px 5px 25px;
+        flex-shrink: 0;
+        transform: none;
+    }
+
+    .date-text {
+        font-size: min(20px, 3.5vh);
+        margin-bottom: 3px;
+    }
+
+    .save-date {
+        font-size: min(14px, 2.5vh);
+        margin-bottom: 2px;
+    }
+
+    .more-info {
+        font-size: min(12px, 2vh);
+    }
+}
+
+/* Fallback to ensure info section is always visible on mobile */
+@media (max-width: 768px) {
+    .info-section {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+}
+
+/* Schedule Page Styles */
+.schedule-page {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.schedule-table-wrapper {
+    overflow-x: auto;
+    margin-top: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.schedule-table thead {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.schedule-table th {
+    padding: 12px 8px;
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid #dee2e6;
+}
+
+.schedule-table td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #dee2e6;
+    vertical-align: middle;
+}
+
+.schedule-table tbody tr:first-child td:first-child,
+.schedule-table tbody tr td:first-child,
+.schedule-table tbody tr td:nth-child(2) {
+    background-color: #f8f9fa;
+    font-weight: 500;
+}
+
+.event-cell {
+    font-weight: 500;
+    padding: 12px 8px;
+}
+
+/* Event type colors matching the image */
+.event-aufbau {
+    background-color: #d3d3d3;
+}
+
+.event-workshop {
+    background-color: #e6b3cc;
+}
+
+.event-social {
+    background-color: #fff9c4;
+}
+
+.event-brunch {
+    background-color: #c8e6c9;
+}
+
+.event-tour {
+    background-color: #b3d9ff;
+}
+
+.event-pride {
+    background-color: #c8e6c9;
+}
+
+.event-quiet {
+    background-color: #e0e0e0;
+}
+
+.event-checkin {
+    background-color: #f5f5f5;
+}
+
+.event-swimming {
+    background-color: #64b5f6;
+    color: white;
+    font-weight: bold;
+}
+
+.event-crash {
+    background-color: #f8bbd0;
+}
+
+.event-party {
+    background-color: #ffd54f;
+}
+
+.event-afterparty {
+    background-color: #fff9c4;
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+    .schedule-page {
+        padding: 1rem;
+    }
+
+    .schedule-table {
+        font-size: 12px;
+    }
+
+    .schedule-table th,
+    .schedule-table td {
+        padding: 6px 4px;
     }
 }

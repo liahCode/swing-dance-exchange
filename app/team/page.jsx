@@ -5,7 +5,7 @@ export const metadata = {
 export default async function Page() {
     return (
         <>
-            <h1 className="mb-8">Team</h1>
+            <h1 className="page-title">Team</h1>
         </>
     );
 }

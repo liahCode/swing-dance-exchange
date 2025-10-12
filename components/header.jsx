@@ -13,21 +13,23 @@ const navItems = [
 
 export function Header() {
     return (
-        <nav className="header-nav">
-            <Link href="/">
-                <Image src={netlifyLogo} alt="Home" />
-            </Link>
-            {!!navItems?.length && (
-                <ul className="nav-items">
-                    {navItems.map((item, index) => (
-                        <li key={index}>
-                            <Link href={item.href} className="nav-link">
-                                {item.linkText}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            )}
-        </nav>
+        <header>
+            <nav>
+                <Link href="/">
+                    <Image src={netlifyLogo} alt="Home" />
+                </Link>
+                {!!navItems?.length && (
+                    <ul>
+                        {navItems.map((item, index) => (
+                            <li key={index}>
+                                <Link href={item.href}>
+                                    {item.linkText}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </nav>
+        </header>
     );
 }
