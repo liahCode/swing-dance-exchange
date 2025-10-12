@@ -15,8 +15,8 @@ There are advatanges to using Edge Functions directly, such as the ability to ac
 
 export default function FallbackPage() {
     return (
-        <div className="flex flex-col gap-12 sm:gap-16">
-            <h1 className="mb-8">Registration</h1>
+        <div className="page-container">
+            <h1 className="page-title">Registration</h1>
         </div>
     );
 }
