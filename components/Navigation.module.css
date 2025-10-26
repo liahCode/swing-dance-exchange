@@ -1,0 +1,276 @@
+.navigation {
+  width: 100%;
+  padding: 20px 0;
+  background-color: transparent;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.mainBubbles {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.menuItem {
+  position: relative;
+}
+
+.submenuCard {
+  position: absolute;
+  top: calc(100% + 30px);
+  left: -10px;
+  background-color: transparent;
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  z-index: 100;
+  animation: submenuCardAppear 0.3s ease-out;
+}
+
+/* Fallback for browsers without backdrop-filter */
+@supports not (backdrop-filter: blur(20px)) {
+  .submenuCard {
+    background-color: rgba(255, 255, 255, 0.95);
+  }
+}
+
+@keyframes submenuCardAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .submenuCard {
+    animation: submenuCardAppearReduced 0.3s ease-out;
+  }
+
+  @keyframes submenuCardAppearReduced {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+.submenu {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.submenuItem {
+  opacity: 0;
+  animation: bubbleIn 200ms ease-out forwards;
+}
+
+@keyframes bubbleIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Zig-zag offset pattern */
+.submenuItem.leftAligned {
+  align-self: flex-start;
+  margin-left: 0;
+}
+
+.submenuItem.rightAligned {
+  align-self: flex-start;
+  margin-left: 30px;
+}
+
+/* Mobile Hamburger Menu */
+.mobileMenuToggle {
+  display: none;
+}
+
+/* Desktop only submenu (hidden on mobile) */
+.desktopOnly {
+  display: block;
+}
+
+/* Mobile Submenu Panel */
+.mobileSubmenuPanel {
+  display: none;
+}
+
+.backArrow {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.hamburgerIcon {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}
+
+.hamburgerLine {
+  width: 24px;
+  height: 3px;
+  background-color: white;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  display: block;
+}
+
+/* Hamburger animation when open */
+.hamburgerLine.hamburgerOpen:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburgerLine.hamburgerOpen:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburgerLine.hamburgerOpen:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  /* Show hamburger menu button */
+  .mobileMenuToggle {
+    display: block;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+  }
+
+  /* Hide desktop navigation by default */
+  .mainBubbles {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 300px;
+    height: 100vh;
+    background-color: rgba(168, 168, 168, 0.98);
+    backdrop-filter: blur(20px);
+    flex-direction: column;
+    gap: 25px;
+    padding: 100px 30px 40px 30px;
+    overflow-y: auto;
+    transition: left 0.3s ease-out;
+    z-index: 999;
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Show menu when open */
+  .mainBubbles.mobileMenuOpen {
+    left: 0;
+  }
+
+  /* Menu items slide in from left */
+  .menuItem {
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: slideInFromLeft 0.3s ease-out forwards;
+  }
+
+  @keyframes slideInFromLeft {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Stagger animation for menu items */
+  .mobileMenuOpen .menuItem:nth-child(1) {
+    animation-delay: 0.05s;
+  }
+  .mobileMenuOpen .menuItem:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  .mobileMenuOpen .menuItem:nth-child(3) {
+    animation-delay: 0.15s;
+  }
+  .mobileMenuOpen .menuItem:nth-child(4) {
+    animation-delay: 0.2s;
+  }
+
+  .submenuCard {
+    position: static;
+    left: 0;
+    margin-top: 15px;
+    padding: 15px;
+  }
+
+  .submenu {
+    padding-left: 10px;
+  }
+
+  .submenuItem.rightAligned {
+    margin-left: 20px;
+  }
+
+  /* Hide desktop submenu on mobile */
+  .desktopOnly {
+    display: none;
+  }
+
+  /* Mobile Submenu Panel Styles */
+  .mobileSubmenuPanel {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 300px;
+    height: 100vh;
+    background-color: rgba(168, 168, 168, 0.98);
+    backdrop-filter: blur(20px);
+    z-index: 998;
+    padding: 100px 30px 40px 30px;
+    overflow-y: auto;
+    transition: left 0.3s ease-out;
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .mobileSubmenuPanel.mobileSubmenuOpen {
+    left: 0;
+  }
+
+  .mobileBackButton {
+    margin-bottom: 30px;
+  }
+
+  .mobileSubmenuItems {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+
+  .mobileSubmenuItem {
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: slideInFromLeft 0.3s ease-out forwards;
+  }
+}

@@ -1,10 +1,10 @@
 import '../styles/globals.css';
-import { Header } from '../components/header';
+import Navigation from '../components/Navigation';
 
 export const metadata = {
     title: {
         template: '%s | Netlify',
-        default: 'Queer Swing Dance Exchange Zurich'
+        default: 'Queer Swing Dance Exchange Zürich'
     }
 };
 
@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
             <link rel="icon" href="/favicon.svg" sizes="any" />
         </head>
         <body>
-        <Header />
+        <Navigation />
         <main>{children}</main>
         {/*<Footer />*/}
         </body>

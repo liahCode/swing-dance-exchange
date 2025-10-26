@@ -17,7 +17,7 @@
 body {
     margin: 0;
     padding: 0;
-    background: radial-gradient(ellipse at center, #d4c4b0 0%, #b8a691 40%, #9c8d7a 100%);
+    background: #e9eef9;
     min-height: 100vh;
     display: flex;
     flex-direction: column;

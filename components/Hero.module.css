@@ -1,0 +1,108 @@
+.hero {
+  position: relative;
+  min-height: 75vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 100%;
+}
+
+.decorativeBubbles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.decorativeBubble {
+  position: absolute;
+  filter: blur(8px);
+}
+
+.content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+  max-width: 900px;
+  padding: 0 40px;
+}
+
+.title {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+  line-height: 1.2;
+  display: flex;
+  justify-content: center;
+}
+
+.dates {
+  font-size: 2rem;
+  font-weight: 500;
+  color: #555;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.tagline {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #666;
+  font-style: italic;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.textInner {
+  display: inline-block;
+  width: max-content;
+  text-align: center;
+}
+
+.physicsCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .hero {
+    min-height: 60vh;
+  }
+
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .dates {
+    font-size: 1.5rem;
+  }
+
+  .tagline {
+    font-size: 1.2rem;
+  }
+
+  .content {
+    padding: 0 20px;
+  }
+
+  .decorativeBubble {
+    opacity: 0.6;
+  }
+}
