@@ -1,4 +1,4 @@
-export const metadata = { title: 'Transport' };
+'use client';
 
 export default function Page() {
   return (
@@ -8,4 +8,3 @@ export default function Page() {
     </div>
   );
 }
-

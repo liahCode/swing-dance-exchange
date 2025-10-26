@@ -1,4 +1,4 @@
-export const metadata = { title: 'Volunteer' };
+'use client';
 
 export default function Page() {
   return (

@@ -1,11 +1,10 @@
-export const metadata = {
-    title: 'Travelinformation'
-};
+'use client';
 
-export default async function Page() {
+export default function Page() {
     return (
         <>
             <h1 className="page-title">Travelinformation</h1>
         </>
     );
 }
+
