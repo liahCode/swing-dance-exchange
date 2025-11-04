@@ -1,0 +1,48 @@
+/* Schedule Page Styles */
+.schedulePage {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Desktop view - show by default */
+.desktopView {
+    display: block;
+}
+
+/* Mobile view - hide by default */
+.mobileView {
+    display: none;
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+    .schedulePage {
+        padding: 1rem;
+    }
+
+    /* Hide desktop grid on mobile */
+    .desktopView {
+        display: none;
+    }
+
+    /* Show mobile cards */
+    .mobileView {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+}
+
+/* Very small screens - adjust padding */
+@media (max-width: 380px) {
+    .schedulePage {
+        padding: 0.5rem;
+    }
+
+    .mobileView {
+        gap: 12px;
+    }
+}
+

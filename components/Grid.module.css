@@ -1,0 +1,117 @@
+/* Grid Component Styles */
+
+.scheduleTableWrapper {
+    overflow-x: auto;
+    margin-top: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.scheduleTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.scheduleTable thead {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.scheduleTable th {
+    padding: 12px 8px;
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid #dee2e6;
+    width: auto;
+}
+
+/* First column (Time) should be narrower */
+.scheduleTable th:first-child {
+    width: 80px;
+}
+
+/* Weekday header columns - each spans 2 sub-columns */
+.scheduleTable th:nth-child(2),
+.scheduleTable th:nth-child(3),
+.scheduleTable th:nth-child(4) {
+    width: calc((100% - 80px) / 3);
+}
+
+/* Individual event columns within each day should be equal */
+.scheduleTable tbody td:not(:first-child) {
+    width: calc((100% - 80px) / 6); /* 6 total event columns (2 per day * 3 days) */
+}
+
+.scheduleTable td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #dee2e6;
+    vertical-align: middle;
+}
+
+.scheduleTable tbody tr:first-child td:first-child,
+.scheduleTable tbody tr td:first-child {
+    background-color: #f8f9fa;
+    font-weight: 500;
+}
+
+.eventCell {
+    font-weight: 500;
+    padding: 12px 8px;
+}
+
+/* Event type colors */
+.eventAufbau {
+    background-color: #d3d3d3;
+}
+
+.eventWorkshop {
+    background-color: #e6b3cc;
+}
+
+.eventSocial {
+    background-color: #fff9c4;
+}
+
+.eventBrunch {
+    background-color: #c8e6c9;
+}
+
+.eventTour {
+    background-color: #b3d9ff;
+}
+
+.eventPride {
+    background-color: #c8e6c9;
+}
+
+.eventQuiet {
+    background-color: #e0e0e0;
+}
+
+.eventCheckin {
+    background-color: #f5f5f5;
+}
+
+.eventSwimming {
+    background-color: #64b5f6;
+    color: white;
+    font-weight: bold;
+}
+
+.eventCrash {
+    background-color: #f8bbd0;
+}
+
+.eventParty {
+    background-color: #ffd54f;
+}
+
+.eventAfterparty {
+    background-color: #fff9c4;
+}
+
+
