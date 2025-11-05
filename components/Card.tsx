@@ -1,7 +1,9 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import styles from './Card.module.css';
 
-export interface CardEvent {
+interface CardEvent {
     startTime: string; // Format: "HH:MM"
     endTime: string; // Format: "HH:MM"
     column: number; // Column position (0 or 1 for multi-column layout)
@@ -49,6 +51,12 @@ const calculateRowSpan = (startTime: string, endTime: string): number => {
 };
 
 export default function Card({ day, events }: CardProps) {
+    const [isExpanded, setIsExpanded] = useState(true);
+
+    const toggleCollapse = () => {
+        setIsExpanded(!isExpanded);
+    };
+
     // Group events by column for processing
     const eventsByColumn: { [key: string]: Array<CardEvent & { startRow: number; rowSpan: number }> } = {
         '0': [],
@@ -86,7 +94,10 @@ export default function Card({ day, events }: CardProps) {
 
     return (
         <div className={styles.dayCard}>
-            <div className={styles.dayHeader}>{day}</div>
+            <div className={styles.dayHeader} onClick={toggleCollapse}>
+                {day}
+            </div>
+            {isExpanded && (
             <div className={styles.dayContent}>
                 <div className={styles.scheduleTableWrapper}>
                     <table className={styles.scheduleTable}>
@@ -160,6 +171,7 @@ export default function Card({ day, events }: CardProps) {
                     </table>
                 </div>
             </div>
+            )}
         </div>
     );
 }
