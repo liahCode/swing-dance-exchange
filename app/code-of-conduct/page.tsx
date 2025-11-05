@@ -1,6 +1,4 @@
-export const metadata = {
-    title: 'Code of Conduct'
-};
+'use client';
 
 export default function Page() {
     return (
@@ -9,3 +7,4 @@ export default function Page() {
         </div>
     );
 }
+

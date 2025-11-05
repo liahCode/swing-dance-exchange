@@ -1,4 +1,4 @@
-export const metadata = { title: 'Payment' };
+'use client';
 
 export default function Page() {
   return (

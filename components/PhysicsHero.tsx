@@ -305,7 +305,7 @@ export default function PhysicsHero({
       }
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, [boundary, params, imagesLoaded]);
+  }, [boundary, params, imagesLoaded, bubbles, textBounds]);
 
   return (
     <section className={styles.hero} ref={containerRef}>

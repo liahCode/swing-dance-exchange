@@ -1,8 +1,6 @@
-export const metadata = {
-    title: 'Artists'
-};
+'use client';
 
-export default async function Page() {
+export default function Page() {
     return (
         <>
             <div className="flex flex-col gap-12 sm:gap-16">
@@ -11,3 +9,4 @@ export default async function Page() {
         </>
     );
 }
+

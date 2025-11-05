@@ -1,8 +1,6 @@
-export const metadata = {
-    title: 'Team'
-};
+'use client';
 
-export default async function Page() {
+export default function Page() {
     return (
         <>
             <h1 className="page-title">Team</h1>

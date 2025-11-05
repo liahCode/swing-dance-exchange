@@ -1,4 +1,4 @@
-export const metadata = { title: 'Ticket Types' };
+'use client';
 
 export default function Page() {
   return (
