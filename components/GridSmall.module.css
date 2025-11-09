@@ -1,0 +1,103 @@
+.scheduleTableWrapper {
+    overflow-x: auto;
+}
+
+.scheduleTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    table-layout: fixed;
+}
+
+.scheduleTable td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #dee2e6;
+    vertical-align: middle;
+}
+
+/* Time column should be narrower */
+.timeCell {
+    background-color: #f8f9fa;
+    font-weight: 500;
+    width: 80px;
+    font-size: 0.875rem;
+}
+
+/* Event columns should be equal width and larger than time column */
+.scheduleTable tbody td:not(.timeCell) {
+    width: calc((100% - 80px) / 2); /* 2 event columns per day */
+}
+
+.eventCell {
+    font-weight: 500;
+    padding: 12px 8px;
+}
+
+/* Event type colors - match Grid colors */
+.eventAufbau {
+    background-color: #d3d3d3;
+}
+
+.eventWorkshop {
+    background-color: #e6b3cc;
+}
+
+.eventSocial {
+    background-color: #fff9c4;
+}
+
+.eventBrunch {
+    background-color: #c8e6c9;
+}
+
+.eventTour {
+    background-color: #b3d9ff;
+}
+
+.eventPride {
+    background-color: #c8e6c9;
+}
+
+.eventQuiet {
+    background-color: #e0e0e0;
+}
+
+.eventCheckin {
+    background-color: #f5f5f5;
+}
+
+.eventSwimming {
+    background-color: #64b5f6;
+    color: white;
+    font-weight: bold;
+}
+
+.eventCrash {
+    background-color: #f8bbd0;
+}
+
+.eventParty {
+    background-color: #ffd54f;
+}
+
+.eventAfterparty {
+    background-color: #fff9c4;
+}
+
+/* Responsive adjustments */
+@media (max-width: 380px) {
+    .timeCell {
+        width: 50px;
+        font-size: 0.75rem;
+        padding: 6px 4px;
+    }
+
+    .eventCell {
+        font-size: 0.85rem;
+        padding: 8px 6px;
+    }
+}
+

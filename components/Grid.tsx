@@ -1,7 +1,9 @@
+'use client';
+
 import React from 'react';
 import styles from './Grid.module.css';
 
-export interface Event {
+interface Event {
     startTime: string; // Format: "HH:MM"
     endTime: string; // Format: "HH:MM"
     column: number; // Column position (0 or 1 for multi-column layout)
