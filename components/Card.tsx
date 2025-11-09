@@ -3,18 +3,11 @@
 import React, { useState } from 'react';
 import styles from './Card.module.css';
 import GridSmall from './GridSmall';
-
-interface CardEvent {
-    startTime: string; // Format: "HH:MM"
-    endTime: string; // Format: "HH:MM"
-    column: number; // Column position (0 or 1 for multi-column layout)
-    eventName: string;
-    color: string; // CSS class name for the color
-}
+import { Event } from '@/utils/Grid.utils';
 
 interface CardProps {
     day: 'Friday' | 'Saturday' | 'Sunday';
-    events: CardEvent[];
+    events: Event[];
 }
 
 export default function Card({ day, events }: CardProps) {
