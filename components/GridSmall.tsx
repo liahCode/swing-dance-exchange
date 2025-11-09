@@ -2,23 +2,7 @@
 
 import React from 'react';
 import styles from './GridSmall.module.css';
-import { Event, GridSmallProps, timeSlots } from '@/utils/Grid.utils';
-
-// Helper to convert time string to row index
-const timeToRowIndex = (time: string): number => {
-    return timeSlots.findIndex(slot => slot.start === time);
-};
-
-// Helper to calculate row span
-const calculateRowSpan = (startTime: string, endTime: string): number => {
-    const startIndex = timeToRowIndex(startTime);
-    const endIndex = timeToRowIndex(endTime);
-    if (endIndex === -1) {
-        // If endTime is "00:00", it's the end of the last slot
-        return timeSlots.length - startIndex;
-    }
-    return endIndex - startIndex;
-};
+import { Event, GridSmallProps, timeSlots, timeToRowIndex, calculateRowSpan } from '@/utils/Grid.utils';
 
 export default function GridSmall({ events }: GridSmallProps) {
     // Group events by column for processing

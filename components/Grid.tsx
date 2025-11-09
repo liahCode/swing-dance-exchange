@@ -2,27 +2,15 @@
 
 import React from 'react';
 import styles from './Grid.module.css';
-import {Event, timeSlots} from '@/utils/Grid.utils';
+import { Event, timeSlots, timeToRowIndex, calculateRowSpan } from '@/utils/Grid.utils';
+
+// Re-export Event for consumers of Grid component
+export type { Event };
 
 interface GridProps {
     eventsByDay: Map<'Friday' | 'Saturday' | 'Sunday', Event[]>;
 }
 
-// Helper to convert time string to row index
-const timeToRowIndex = (time: string): number => {
-    return timeSlots.findIndex(slot => slot.start === time);
-};
-
-// Helper to calculate row span
-const calculateRowSpan = (startTime: string, endTime: string): number => {
-    const startIndex = timeToRowIndex(startTime);
-    const endIndex = timeToRowIndex(endTime);
-    if (endIndex === -1) {
-        // If endTime is "00:00", it's the end of the last slot
-        return timeSlots.length - startIndex;
-    }
-    return endIndex - startIndex;
-};
 
 export default function Grid({eventsByDay}: GridProps) {
     // Get the days from the Map keys

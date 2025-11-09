@@ -27,3 +27,19 @@ export const timeSlots = [
     { start: '22:00', end: '23:00' },
     { start: '23:00', end: '00:00' },
 ];
+
+// Helper to convert time string to row index
+export const timeToRowIndex = (time: string): number => {
+    return timeSlots.findIndex(slot => slot.start === time);
+};
+
+// Helper to calculate row span
+export const calculateRowSpan = (startTime: string, endTime: string): number => {
+    const startIndex = timeToRowIndex(startTime);
+    const endIndex = timeToRowIndex(endTime);
+    if (endIndex === -1) {
+        // If endTime is "00:00", it's the end of the last slot
+        return timeSlots.length - startIndex;
+    }
+    return endIndex - startIndex;
+};
