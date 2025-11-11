@@ -9,15 +9,15 @@
   height: 50px;
   border-radius: 50%;
 
-  /* Corporate color from palette - light blue bubble (#abb2c6) */
-  background: linear-gradient(135deg, #abb2c6 0%, #5289b5 100%);
-  border: none;
+  /* Lighter, less saturated bubble - using desaturated light blue */
+  background: linear-gradient(135deg, rgba(225, 228, 240, 0.95) 0%, rgba(171, 178, 198, 0.85) 100%);
+  border: 2px solid rgba(171, 178, 198, 0.4);
 
-  /* Typography - Corporate font */
+  /* Typography - Corporate font with increased weight for readability */
   font-family: 'Sukhumvit Set', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-weight: 500;
-  font-size: 0.9rem;
-  color: #6a453a; /* Text color from corporate palette */
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #6a453a; /* Text color from corporate palette - dark brown for contrast */
 
   /* Layout */
   display: flex;
@@ -54,6 +54,7 @@
   position: absolute;
   top: calc(100% + 0.5rem);
   right: 0;
+  transform: translateX(0);
 
   /* Corporate background color */
   background: #e9eef9;
@@ -62,6 +63,7 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 
   min-width: 180px;
+  max-width: 200px;
   z-index: 1000;
   overflow: hidden;
   animation: fadeIn 0.2s ease;

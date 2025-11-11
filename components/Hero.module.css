@@ -70,6 +70,12 @@
   text-align: center;
 }
 
+.newsletterWrapper {
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 500px;
+}
+
 .physicsCanvas {
   position: absolute;
   top: 0;

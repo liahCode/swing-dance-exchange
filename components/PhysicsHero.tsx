@@ -14,6 +14,7 @@ import {
   updateAllBubbles,
 } from '@/lib/physics/bubblePhysics';
 import { getBubbleImage } from '@/constants/colors';
+import NewsletterForm from './NewsletterForm';
 import styles from './Hero.module.css';
 
 interface PhysicsHeroProps {
@@ -44,6 +45,7 @@ export default function PhysicsHero({
   const titleRef = useRef<HTMLSpanElement>(null);
   const datesRef = useRef<HTMLSpanElement>(null);
   const taglineRef = useRef<HTMLSpanElement>(null);
+  const newsletterRef = useRef<HTMLDivElement>(null);
 
   // Text bounds state
   const [textBounds, setTextBounds] = useState<TextBounds[]>([]);
@@ -149,7 +151,7 @@ export default function PhysicsHero({
       const bounds: TextBounds[] = [];
 
       // Measure each text element
-      [titleRef, datesRef, taglineRef].forEach((ref) => {
+      [titleRef, datesRef, taglineRef, newsletterRef].forEach((ref) => {
         if (ref.current) {
           const rect = ref.current.getBoundingClientRect();
           // Convert to canvas coordinates (relative to container)
@@ -364,6 +366,9 @@ export default function PhysicsHero({
             {t('tagline')}
           </span>
         </p>
+        <div className={styles.newsletterWrapper} ref={newsletterRef}>
+          <NewsletterForm />
+        </div>
       </div>
     </section>
   );

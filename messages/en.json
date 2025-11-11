@@ -33,7 +33,7 @@
   "hero": {
     "title": "Queer Swing Dance Exchange Zürich",
     "dates": "19th - 21st June 2026",
-    "tagline": "Stay tuned for more information!"
+    "tagline": "Subscribe for updates and early bird access!"
   },
   "pages": {
     "contact": {
@@ -132,5 +132,13 @@
   "footer": {
     "privacy": "Privacy Policy",
     "impressum": "Impressum"
+  },
+  "newsletter": {
+    "placeholder": "your@email.com",
+    "subscribe": "Subscribe",
+    "subscribing": "Subscribing...",
+    "ariaLabel": "Email address for newsletter",
+    "successTitle": "Check your email!",
+    "successMessage": "We've sent you a confirmation email. Please click the link to confirm your subscription."
   }
 }

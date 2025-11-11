@@ -151,6 +151,7 @@ a:not(.btn):hover {
 
 html, body {
     height: 100%;
+    overflow-x: hidden;
 }
 
 /* Main content */
