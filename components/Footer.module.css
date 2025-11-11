@@ -1,0 +1,44 @@
+.footer {
+  width: 100%;
+  padding: 1rem 2rem;
+  margin-top: 4rem;
+  border-top: 1px solid rgba(171, 178, 198, 0.2);
+  background: transparent;
+}
+
+.footerContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: 'Sukhumvit Set', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(106, 69, 58, 0.6);
+}
+
+.footerLink {
+  color: rgba(106, 69, 58, 0.6);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footerLink:hover {
+  color: #5289b5;
+  text-decoration: underline;
+}
+
+.separator {
+  color: rgba(171, 178, 198, 0.4);
+  user-select: none;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 0.75rem 1rem;
+    margin-top: 3rem;
+  }
+
+  .footerContent {
+    font-size: 0.7rem;
+  }
+}

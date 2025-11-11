@@ -28,6 +28,10 @@ export interface PhysicsParams {
   noiseLengthScale: number;  // λ: Spatial correlation length in pixels (typical: 200-500)
   noiseTimeScale: number;    // τ: Temporal correlation in frames (typical: 300-1000)
 
+  // Curl-noise flow (incompressible swirl) for more aesthetic motion
+  curlStrength: number;       // Strength of curl-based force
+  flowMix: number;            // 0..1 mix between gradient (perlin) and curl forces
+
   // Boundary repulsion parameters
   boundaryStiffness: number;  // K: Repulsion strength (typical: 0.01-0.1)
   boundaryDistance: number;   // d₀: Onset distance in pixels (typical: 50-100)
@@ -35,9 +39,20 @@ export interface PhysicsParams {
   // Bubble-bubble interaction
   bubbleRepulsion: number;    // ε: Inter-bubble repulsion (typical: 0.01, 0 = disabled)
 
+  // Spread/anti-clumping pressure (longer-range, low-amplitude)
+  spreadRadius: number;       // Gaussian kernel sigma (px)
+  spreadPressure: number;     // Strength of density pressure
+
+  // Desynchronization to break long "travel together" pairs
+  desyncStrength: number;     // Tangential nudge when aligned and close
+  desyncDistance: number;     // Distance threshold for desync check
+
   // Text repulsion parameters
   textRepulsionDistance: number;  // d₀: Onset distance for text repulsion (typical: 100px)
   textRepulsionStiffness: number; // K: Text repulsion strength (typical: 0.05)
+
+  // Integration safety
+  maxStepDistance: number;    // Max displacement (px) allowed per substep to avoid teleports
 }
 
 /**
@@ -58,14 +73,21 @@ export interface TextBounds {
 export const defaultPhysicsParams: PhysicsParams = {
   beta0: 0.15,
   dragExponent: 1.0,
-  noiseStrength: 2000,  // Increased for stronger fluid forcing
+  noiseStrength: 1200,  // Slightly reduced; curl will add energy
   noiseLengthScale: 350,
   noiseTimeScale: 500,
+  curlStrength: 1400,
+  flowMix: 0.65,       // Blend more curl (swirl) than gradient
   boundaryStiffness: 6.0,  // Matched to text repulsion for consistent edge behavior
   boundaryDistance: 15,
   bubbleRepulsion: 0.015,
+  spreadRadius: 220,
+  spreadPressure: 0.05,
+  desyncStrength: 0.015,
+  desyncDistance: 140,
   textRepulsionDistance: 20,
   textRepulsionStiffness: 6.0,  // 10x from 0.6 for very strong text avoidance
+  maxStepDistance: 12,
 };
 
 /**
@@ -115,6 +137,11 @@ export const vec2 = {
 };
 
 const EPSILON = 1e-6;
+const clamp01 = (x: number) => Math.max(0, Math.min(1, x));
+const smoothstep = (t: number) => {
+  const x = clamp01(t);
+  return x * x * (3 - 2 * x);
+};
 
 function cross(o: Vec2, a: Vec2, b: Vec2): number {
   return (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
@@ -288,6 +315,28 @@ export function computePerlinForce(
 }
 
 /**
+ * Compute curl-noise (divergence-free) force for more aesthetic, swirly motion.
+ * In 2D, use a scalar noise potential N and set u = (∂N/∂y, -∂N/∂x).
+ */
+export function computeCurlNoiseForce(
+  position: Vec2,
+  time: number,
+  params: PhysicsParams
+): Vec2 {
+  const noise = getGlobalNoise();
+  const nx = position.x / params.noiseLengthScale;
+  const ny = position.y / params.noiseLengthScale;
+  const nt = time / params.noiseTimeScale;
+  const grad = noise.gradient3D(nx, ny, nt, 0.01);
+  // Curl of scalar in 2D: rotate gradient 90°
+  const curl = { x: grad.dy, y: -grad.dx };
+  return {
+    x: params.curlStrength * curl.x / params.noiseLengthScale,
+    y: params.curlStrength * curl.y / params.noiseLengthScale,
+  };
+}
+
+/**
  * Compute boundary repulsion force
  *
  * For each wall we treat the bubble as a circle interacting with an inverse-square
@@ -389,6 +438,78 @@ export function computeBubbleBubbleForce(
 }
 
 /**
+ * Longer-range, low-amplitude density pressure to discourage clustering and
+ * fill empty space. Approximates -∇ρ via pairwise Gaussian kernel contributions.
+ */
+export function computeDensityPressureForce(
+  bubble: BubbleState,
+  allBubbles: BubbleState[],
+  params: PhysicsParams
+): Vec2 {
+  const sigma = Math.max(params.spreadRadius, 1);
+  const twoSigma2 = 2 * sigma * sigma;
+  let fx = 0;
+  let fy = 0;
+  for (const other of allBubbles) {
+    if (other.id === bubble.id) continue;
+    const dx = bubble.position.x - other.position.x;
+    const dy = bubble.position.y - other.position.y;
+    const r2 = dx * dx + dy * dy;
+    if (r2 < EPSILON) continue;
+    const r = Math.sqrt(r2);
+    // Gaussian weight
+    const w = Math.exp(-r2 / twoSigma2);
+    // Direction away from neighbor; 1/r to approximate gradient of density sum
+    const invr = 1 / r;
+    fx += w * dx * invr;
+    fy += w * dy * invr;
+  }
+  return { x: fx * params.spreadPressure, y: fy * params.spreadPressure };
+}
+
+/**
+ * Desynchronization force: when bubbles are close and velocities are aligned,
+ * add a small tangential nudge to break long parallel travel.
+ */
+export function computeDesyncForce(
+  bubble: BubbleState,
+  allBubbles: BubbleState[],
+  params: PhysicsParams
+): Vec2 {
+  let tx = 0;
+  let ty = 0;
+  const v = bubble.velocity;
+  const vLen = Math.sqrt(v.x * v.x + v.y * v.y) || 1;
+  const vHat = { x: v.x / vLen, y: v.y / vLen };
+  for (const other of allBubbles) {
+    if (other.id === bubble.id) continue;
+    const dx = bubble.position.x - other.position.x;
+    const dy = bubble.position.y - other.position.y;
+    const r2 = dx * dx + dy * dy;
+    if (r2 < EPSILON) continue;
+    const r = Math.sqrt(r2);
+    if (r > params.desyncDistance) continue;
+    const ov = other.velocity;
+    const ovLen = Math.sqrt(ov.x * ov.x + ov.y * ov.y) || 1;
+    const ovHat = { x: ov.x / ovLen, y: ov.y / ovLen };
+    const align = vHat.x * ovHat.x + vHat.y * ovHat.y; // cos(theta)
+    if (align > 0.85) {
+      // Tangential unit relative to neighbor direction (rotate radial by 90°)
+      const invr = 1 / r;
+      const rx = dx * invr;
+      const ry = dy * invr;
+      const tan = { x: -ry, y: rx };
+      // Deterministic sign to avoid symmetry (use id parity)
+      const sign = (bubble.id % 2 === 0) ? 1 : -1;
+      const weight = params.desyncStrength * (align - 0.85) * (1 - r / params.desyncDistance);
+      tx += sign * tan.x * weight;
+      ty += sign * tan.y * weight;
+    }
+  }
+  return { x: tx, y: ty };
+}
+
+/**
  * Compute text repulsion force
  */
 export function computeTextRepulsionForce(
@@ -398,52 +519,42 @@ export function computeTextRepulsionForce(
 ): Vec2 {
   const hull = computeTextConvexHull(textBounds, params.textRepulsionDistance);
   const edges = computeHullEdges(hull);
+  if (edges.length < 3) return { x: 0, y: 0 };
 
-  if (edges.length < 3) {
+  // Find the most constraining edge (minimum signed distance)
+  let minSigned = Infinity;
+  let minEdge: HullEdge | null = null;
+  for (const edge of edges) {
+    const sd = vec2.dot(edge.normal, position) - edge.distance;
+    if (sd < minSigned) {
+      minSigned = sd;
+      minEdge = edge;
+    }
+  }
+  if (!minEdge) return { x: 0, y: 0 };
+
+  const threshold = Math.max(params.textRepulsionDistance, 1);
+  const k = params.textRepulsionStiffness; // use stiffness directly with smooth shaping
+
+  // Outside: sd >= 0; Inside: sd < 0
+  if (minSigned >= threshold) {
     return { x: 0, y: 0 };
   }
 
-  const threshold = Math.max(params.textRepulsionDistance, 1);
-  const k = params.textRepulsionStiffness * threshold * threshold;
-  const invThresholdSq = 1 / (threshold * threshold);
-  const force: Vec2 = { x: 0, y: 0 };
-
-  let deepestPenetration = 0;
-  let deepestEdge: HullEdge | null = null;
-
-  for (const edge of edges) {
-    const signedDistance = vec2.dot(edge.normal, position) - edge.distance;
-
-    if (signedDistance >= 0) {
-      // Outside or on boundary.
-      if (signedDistance >= threshold) {
-        continue;
-      }
-      const clamped = Math.max(signedDistance, 1);
-      const invSq = 1 / (clamped * clamped);
-      const magnitude = k * (invSq - invThresholdSq);
-      if (magnitude <= 0) {
-        continue;
-      }
-      force.x += magnitude * edge.normal.x;
-      force.y += magnitude * edge.normal.y;
-    } else {
-      const penetration = -signedDistance;
-      if (penetration > deepestPenetration) {
-        deepestPenetration = penetration;
-        deepestEdge = edge;
-      }
-    }
+  let t: number;
+  let magnitude: number;
+  if (minSigned >= 0) {
+    // Outside but within threshold: smoothly ramp up as approach boundary
+    t = 1 - clamp01(minSigned / threshold);        // 1 at boundary, 0 at threshold
+    magnitude = k * smoothstep(t);                 // finite, smooth
+  } else {
+    // Inside: push outward strongly but with finite cap to avoid teleports
+    const penetration = -minSigned;                // 0 at boundary, grows deeper inside
+    t = clamp01(penetration / threshold);          // 0..1
+    magnitude = k * (0.6 + 0.8 * smoothstep(t));  // ~0.6k..1.4k
   }
 
-  if (deepestEdge) {
-    const clamped = Math.max(deepestPenetration, 1);
-    const magnitude = k / (clamped * clamped);
-    force.x += magnitude * deepestEdge.normal.x;
-    force.y += magnitude * deepestEdge.normal.y;
-  }
-
-  return force;
+  return { x: magnitude * minEdge.normal.x, y: magnitude * minEdge.normal.y };
 }
 
 /**
@@ -458,11 +569,29 @@ export function computeTotalForce(
   params: PhysicsParams
 ): Vec2 {
   const fPerlin = computePerlinForce(bubble.position, time, params);
+  const fCurl = computeCurlNoiseForce(bubble.position, time, params);
   const fBoundary = computeBoundaryForce(bubble.position, boundary, params);
   const fBubble = computeBubbleBubbleForce(bubble, allBubbles, params);
   const fText = computeTextRepulsionForce(bubble.position, textBounds, params);
+  const fSpread = computeDensityPressureForce(bubble, allBubbles, params);
+  const fDesync = computeDesyncForce(bubble, allBubbles, params);
 
-  return vec2.add(vec2.add(vec2.add(fPerlin, fBoundary), fBubble), fText);
+  // Blend curl/gradient for base flow
+  const flow = {
+    x: (1 - params.flowMix) * fPerlin.x + params.flowMix * fCurl.x,
+    y: (1 - params.flowMix) * fPerlin.y + params.flowMix * fCurl.y,
+  };
+
+  return vec2.add(
+    vec2.add(
+      vec2.add(
+        vec2.add(flow, fBoundary),
+        vec2.add(fBubble, fSpread)
+      ),
+      fText
+    ),
+    fDesync
+  );
 }
 
 /**
@@ -499,11 +628,19 @@ export function updateBubble(
   // Overdamped velocity: v = F / β
   let velocity: Vec2 = vec2.scale(force, 1 / beta);
 
-  // Cap maximum velocity to prevent jumps (max 20 pixels/frame at dt=1)
+  // Cap maximum velocity to prevent jumps; also respect max displacement per step
   const maxVelocity = 20;
   const velocityMagnitude = vec2.length(velocity);
   if (velocityMagnitude > maxVelocity) {
     velocity = vec2.scale(velocity, maxVelocity / velocityMagnitude);
+  }
+
+  // Clamp displacement per substep to avoid visible teleports on long frames
+  const maxDisp = Math.max(1, params.maxStepDistance);
+  const disp = velocityMagnitude * dt;
+  if (disp > maxDisp && velocityMagnitude > 0) {
+    const scale = maxDisp / disp;
+    velocity = vec2.scale(velocity, scale);
   }
 
   // Update position: x_new = x_old + dt · v
@@ -771,4 +908,3 @@ export function initializeBubbles(
 
   return bubbles;
 }
-

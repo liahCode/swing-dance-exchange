@@ -1,60 +1,50 @@
 export interface SubMenuItem {
-  label: string;
+  labelKey: string;
   href: string;
 }
 
 export interface MenuItem {
-  label: string;
+  labelKey: string;
   href?: string;
   submenu?: SubMenuItem[];
 }
 
 export const MAIN_MENU: MenuItem[] = [
   {
-    label: 'Home',
+    labelKey: 'navigation.home',
     href: '/',
   },
   {
-    label: 'Schedule',
-    href: '/schedule',
-  },
-  {
-    label: 'Artists',
-    href: '/artists',
-  },
-  {
-    label: 'Practical',
+    labelKey: 'navigation.festival.label',
     submenu: [
-      { label: 'Venue', href: '/practical/venue' },
-      { label: 'Accommodation', href: '/practical/accommodation' },
-      { label: 'Food', href: '/practical/food' },
-      { label: 'Transport', href: '/practical/transport' },
-      { label: 'Policies', href: '/practical/policies' },
+      { labelKey: 'navigation.festival.artists', href: '/artists' },
+      { labelKey: 'navigation.festival.registration', href: '/registration' },
+      { labelKey: 'navigation.festival.volunteer', href: '/registration/volunteer' },
+      { labelKey: 'navigation.festival.codeOfConduct', href: '/code-of-conduct' },
     ],
   },
   {
-    label: 'About the Festival',
+    labelKey: 'navigation.whatIs.label',
     submenu: [
-      { label: 'History', href: '/about/history' },
-      { label: 'Mission', href: '/about/mission' },
-      { label: 'Team', href: '/about/team' },
-      { label: 'Community', href: '/about/community' },
+      { labelKey: 'navigation.whatIs.lindyHop', href: '/what-is/lindy-hop' },
+      { labelKey: 'navigation.whatIs.exchange', href: '/what-is/exchange' },
+      { labelKey: 'navigation.whatIs.queerness', href: '/what-is/queerness' },
+      { labelKey: 'navigation.whatIs.vision', href: '/what-is/why-queer-exchange' },
     ],
   },
   {
-    label: 'Registration',
+    labelKey: 'navigation.practical.label',
     submenu: [
-      { label: 'Ticket Types', href: '/registration/ticket-types' },
-      { label: 'Payment', href: '/registration/payment' },
-      { label: 'Volunteer', href: '/registration/volunteer' },
+      { labelKey: 'navigation.practical.schedule', href: '/schedule' },
+      { labelKey: 'navigation.practical.venue', href: '/practical/venue' },
+      { labelKey: 'navigation.practical.accommodation', href: '/practical/accommodation' },
+      { labelKey: 'navigation.practical.food', href: '/practical/food' },
+      { labelKey: 'navigation.practical.transport', href: '/practical/transport' },
+      { labelKey: 'navigation.practical.policies', href: '/practical/policies' },
     ],
   },
   {
-    label: 'Code of Conduct',
-    href: '/code-of-conduct',
-  },
-  {
-    label: 'Contact',
+    labelKey: 'navigation.contact',
     href: '/contact',
   },
 ];

@@ -1,37 +1,43 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 import Bubble from './Bubble';
 import { MAIN_MENU } from '@/constants/navigation';
 import { getBubbleNumberForIndex } from '@/constants/colors';
 import styles from './Navigation.module.css';
 
 export default function Navigation() {
+  const t = useTranslations();
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileSubmenuOpen, setMobileSubmenuOpen] = useState(false);
 
   const handleMainBubbleClick = (index: number) => {
     const menuItem = MAIN_MENU[index];
+    console.log('🔍 Click handler called - index:', index, 'menuItem:', menuItem.labelKey);
 
     // If it has a direct href (like Contact), close mobile menu and navigate
     if (menuItem.href) {
+      console.log('  ℹ️  Has href, closing mobile menu');
       setMobileMenuOpen(false);
       return;
     }
 
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+    console.log('  📱 Window width:', typeof window !== 'undefined' ? window.innerWidth : 'SSR', 'isMobile:', isMobile);
+
     // On mobile, show submenu in separate panel
-    if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+    if (isMobile) {
+      console.log('  ➡️  Mobile: setting activeMenu to', index);
       setActiveMenu(index);
       setMobileSubmenuOpen(true);
     } else {
       // Desktop: Toggle submenu
-      if (activeMenu === index) {
-        setActiveMenu(null);
-      } else {
-        setActiveMenu(index);
-      }
+      const newActiveMenu = activeMenu === index ? null : index;
+      console.log('  🖥️  Desktop: toggling activeMenu from', activeMenu, 'to', newActiveMenu);
+      setActiveMenu(newActiveMenu);
     }
   };
 
@@ -93,12 +99,25 @@ export default function Navigation() {
           const isActive = activeMenu === index;
           const mainBubbleVariant = ((index * 3 + 1) % 15) + 1;
 
+          // Debug logging
+          if (hasSubmenu) {
+            console.log(`🔧 Render - ${item.labelKey}:`, {
+              hasSubmenu,
+              isActive,
+              activeMenu,
+              index,
+              hasSubmenuArray: !!item.submenu,
+              submenuLength: item.submenu?.length,
+              willRender: hasSubmenu && isActive && item.submenu
+            });
+          }
+
           return (
             <div key={index} className={styles.menuItem}>
               {item.href ? (
                 <Link href={item.href} style={{ textDecoration: 'none' }}>
                   <Bubble
-                    label={item.label}
+                    label={t(item.labelKey)}
                     size={40}
                     bubbleNumber={bubbleNumber}
                     isActive={isActive}
@@ -107,7 +126,7 @@ export default function Navigation() {
                 </Link>
               ) : (
                 <Bubble
-                  label={item.label}
+                  label={t(item.labelKey)}
                   size={40}
                   bubbleNumber={bubbleNumber}
                   onClick={() => handleMainBubbleClick(index)}
@@ -130,6 +149,9 @@ export default function Navigation() {
                           key={subIndex}
                           href={subItem.href}
                           style={{ textDecoration: 'none' }}
+                          onClick={() => {
+                            setActiveMenu(null);
+                          }}
                         >
                           <div
                             className={`${styles.submenuItem} ${
@@ -140,7 +162,7 @@ export default function Navigation() {
                             }}
                           >
                             <Bubble
-                              label={subItem.label}
+                              label={t(subItem.labelKey)}
                               size={34}
                               bubbleNumber={subBubbleNumber}
                               animationVariant={submenuBubbleVariant}
@@ -163,7 +185,7 @@ export default function Navigation() {
           {/* Back Button */}
           <div className={styles.mobileBackButton}>
             <Bubble
-              label="Back"
+              label={t('navigation.back')}
               size={40}
               bubbleNumber={6}
               onClick={handleMobileBack}
@@ -197,7 +219,7 @@ export default function Navigation() {
                     }}
                   >
                     <Bubble
-                      label={subItem.label}
+                      label={t(subItem.labelKey)}
                       size={40}
                       bubbleNumber={subBubbleNumber}
                       animationVariant={submenuBubbleVariant}
