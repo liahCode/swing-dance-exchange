@@ -1,0 +1,144 @@
+{
+  "metadata": {
+    "siteTitle": "Queer Swing Dance Exchange Zürich"
+  },
+  "navigation": {
+    "home": "Home",
+    "festival": {
+      "label": "Festival",
+      "artists": "Artists",
+      "registration": "Registration",
+      "volunteer": "Volunteer",
+      "codeOfConduct": "Code of Conduct"
+    },
+    "whatIs": {
+      "label": "What is...",
+      "lindyHop": "... Lindy Hop?",
+      "exchange": "... an Exchange?",
+      "queerness": "... Queerness?",
+      "vision": "... the vision of this event?"
+    },
+    "practical": {
+      "label": "Practical",
+      "schedule": "Schedule",
+      "venue": "Venue",
+      "accommodation": "Accommodation",
+      "food": "Food",
+      "transport": "Transport",
+      "policies": "Policies"
+    },
+    "contact": "Contact",
+    "back": "Back"
+  },
+  "hero": {
+    "title": "Queer Swing Dance Exchange Zürich",
+    "dates": "19th - 21st June 2026",
+    "tagline": "Subscribe for updates and early bird access!"
+  },
+  "pages": {
+    "contact": {
+      "title": "Contact",
+      "comingSoon": "Contact information coming soon!"
+    },
+    "travelinformation": {
+      "title": "Travelinformation"
+    },
+    "artists": {
+      "title": "Artists"
+    },
+    "team": {
+      "title": "Team"
+    },
+    "codeOfConduct": {
+      "title": "Code of Conduct"
+    },
+    "venue": {
+      "title": "Venue",
+      "comingSoon": "Information about the venue coming soon!"
+    },
+    "accommodation": {
+      "title": "Accommodation",
+      "comingSoon": "Information about accommodation coming soon!"
+    },
+    "food": {
+      "title": "Food",
+      "comingSoon": "Information about food options coming soon!"
+    },
+    "transport": {
+      "title": "Transport",
+      "comingSoon": "Information about transport coming soon!"
+    },
+    "policies": {
+      "title": "Policies",
+      "comingSoon": "Information about our policies coming soon!"
+    },
+    "volunteer": {
+      "title": "Volunteer",
+      "comingSoon": "Information about volunteering coming soon!"
+    },
+    "registration": {
+      "title": "Registration",
+      "planningNotes": {
+        "title": "Planning Notes (Internal)",
+        "note1": "Queer Meetup?",
+        "note2": "Parallel Meet-up für queere Locals"
+      }
+    },
+    "schedule": {
+      "title": "Schedule",
+      "planningNotes": {
+        "title": "Planning Notes (Internal)",
+        "note1": "Queer Meetup?",
+        "note2": "Parallel Meet-up für queere Locals",
+        "note3": "On Friday, we want to have a nice meetup where people get to know each other in a small setting. A Taster for people who want to try switch dancing? And a Café Crawl (Swiss thingy) where people also discuss queer topics? Auf dem Vorplatz, we should have a thingy on what it means to be queer, in general, but also, in the context of Lindy Hop. People may realize that they, too, are actually queer :)",
+        "note4": "On Saturday, it should be possible to have a nice outdoor activity. Some sort of tour of Zurich, either from a queer perspective, or from a swing dance perspective, which could be cool. But also, the meetup the day before should be sufficient. Zürich is beautiful in summer, maybe go swimming? But then not everyone does that. It could be nice to have a drag brunch on Saturday, that would be cool, parallel with the Pride. And in the afternoon, a drag workshop. So we offer a brunch from 11:00 to 13:00, a drag brunch, and from 14:00 to 16:00, a drag workshop. Parallel, we have the tours, and probably some other activities. And we hold a masterclass for advanced dancers on switch dancing. Or it may make sense to reduce it to a 1 hour workshop :) And the party starts at like 20:00 then."
+      },
+      "table": {
+        "headers": {
+          "start": "Start",
+          "end": "End",
+          "friday": "Friday",
+          "saturday": "Saturday",
+          "sunday": "Sunday"
+        },
+        "events": {
+          "aufbau": "Aufbau",
+          "switchTaster": "Switch Taster",
+          "cafeCrawl": "Café Crawl (mit talk)",
+          "dragBrunch": "Drag Brunch",
+          "dragWorkshop": "Drag Workshop",
+          "switchMasterclass": "Switch Masterclass",
+          "zhTourQueer": "ZH Tour (Queer)",
+          "zhTourSwing": "ZH Tour (Swing Scene)",
+          "pride": "Pride",
+          "swimming": "SWIMMING",
+          "checkIn": "Check-In",
+          "crashKurs": "Crash-Kurs for non-dancers",
+          "choreoWorkshop": "Choreo Workshop",
+          "somethingFun": "something fun :)",
+          "partyTopic1": "Party (topic: ...)",
+          "partyTopic2": "Party (topic: ...)",
+          "partyTopic3": "Party (topic: ...)",
+          "afterparty": "Afterparty"
+        }
+      }
+    }
+  },
+  "languageSwitcher": {
+    "label": "Language",
+    "english": "English",
+    "german": "German"
+  },
+  "footer": {
+    "privacy": "Privacy Policy",
+    "impressum": "Impressum"
+  },
+  "newsletter": {
+    "placeholder": "your@email.com",
+    "subscribe": "Subscribe",
+    "subscribing": "Subscribing...",
+    "ariaLabel": "Email address for newsletter",
+    "successTitle": "Check your email!",
+    "successMessage": "We've sent you a confirmation email. Please click the link to confirm your subscription."
+  }
+}

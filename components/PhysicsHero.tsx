@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   BubbleState,
   Boundary,
@@ -13,6 +14,7 @@ import {
   updateAllBubbles,
 } from '@/lib/physics/bubblePhysics';
 import { getBubbleImage } from '@/constants/colors';
+import NewsletterForm from './NewsletterForm';
 import styles from './Hero.module.css';
 
 interface PhysicsHeroProps {
@@ -25,9 +27,10 @@ const DEBUG_DRAW_BOUNDARY = false;
 const DEBUG_DRAW_CONTAINER = false;
 
 export default function PhysicsHero({
-  bubbleCount = 15,
+  bubbleCount = 5,
   physicsParams = {},
 }: PhysicsHeroProps) {
+  const t = useTranslations('hero');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [bubbles, setBubbles] = useState<BubbleState[]>([]);
@@ -42,6 +45,7 @@ export default function PhysicsHero({
   const titleRef = useRef<HTMLSpanElement>(null);
   const datesRef = useRef<HTMLSpanElement>(null);
   const taglineRef = useRef<HTMLSpanElement>(null);
+  const newsletterRef = useRef<HTMLDivElement>(null);
 
   // Text bounds state
   const [textBounds, setTextBounds] = useState<TextBounds[]>([]);
@@ -88,9 +92,9 @@ export default function PhysicsHero({
       .catch((err) => console.error('Failed to load bubble images:', err));
   }, []);
 
-  // Initialize bubbles when container size is known AND text bounds are measured
+  // Initialize and keep boundary in sync with container size
   useEffect(() => {
-    if (!containerRef.current || !textBoundsReady) return;
+    if (!containerRef.current) return;
 
     const updateBoundary = () => {
       if (!containerRef.current) return;
@@ -112,16 +116,31 @@ export default function PhysicsHero({
         yMin: 0,
         yMax: rect.height,
       };
-      // Use textBoundsRef to ensure we get the latest measured bounds
-      setBubbles(initializeBubbles(bubbleCount, newBoundary, 40, 100, textBoundsRef.current));
+      // Use textBoundsRef to ensure we get the latest measured bounds (may be empty at first)
+      setBubbles(
+        initializeBubbles(bubbleCount, newBoundary, 40, 100, textBoundsRef.current)
+      );
     };
 
     updateBoundary();
 
     // Handle window resize
     window.addEventListener('resize', updateBoundary);
-    return () => window.removeEventListener('resize', updateBoundary);
-  }, [bubbleCount, textBoundsReady]);
+
+    // Also observe container size changes directly (locale/layout changes, font loads)
+    let ro: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== 'undefined' && containerRef.current) {
+      ro = new ResizeObserver(() => {
+        updateBoundary();
+      });
+      ro.observe(containerRef.current);
+    }
+
+    return () => {
+      window.removeEventListener('resize', updateBoundary);
+      if (ro) ro.disconnect();
+    };
+  }, [bubbleCount]);
 
   // Measure text bounds for repulsion
   useEffect(() => {
@@ -132,7 +151,7 @@ export default function PhysicsHero({
       const bounds: TextBounds[] = [];
 
       // Measure each text element
-      [titleRef, datesRef, taglineRef].forEach((ref) => {
+      [titleRef, datesRef, taglineRef, newsletterRef].forEach((ref) => {
         if (ref.current) {
           const rect = ref.current.getBoundingClientRect();
           // Convert to canvas coordinates (relative to container)
@@ -169,7 +188,7 @@ export default function PhysicsHero({
 
   // Animation loop
   useEffect(() => {
-    if (!canvasRef.current || bubbles.length === 0 || !imagesLoaded || textBounds.length === 0) return;
+    if (!canvasRef.current || bubbles.length === 0) return;
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -179,15 +198,24 @@ export default function PhysicsHero({
     const resizeCanvas = () => {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
-      canvas.width = rect.width;
-      canvas.height = rect.height;
+      const dpr = typeof window !== 'undefined' ? Math.max(1, window.devicePixelRatio || 1) : 1;
+      canvas.width = Math.max(1, Math.floor(rect.width * dpr));
+      canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+      // Reset transform to avoid accumulating scales across resizes
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Use ref to track current bubbles
-    const bubblesRef = { current: bubbles };
+    // Observe container size changes (not only window resizes)
+    let ro: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== 'undefined' && containerRef.current) {
+      ro = new ResizeObserver(() => {
+        resizeCanvas();
+      });
+      ro.observe(containerRef.current);
+    }
 
     const animate = (currentTime: number) => {
       if (!ctx) return;
@@ -199,24 +227,32 @@ export default function PhysicsHero({
         return;
       }
 
-      // Calculate delta time (cap at 50ms to prevent large jumps)
-      const deltaTime = lastFrameTimeRef.current
-        ? Math.min((currentTime - lastFrameTimeRef.current) / 16.67, 3) // Normalize to ~60fps
-        : 1;
+      // Calculate delta time (cap at 33.3ms for 30fps target)
+      const deltaTime = Math.min(currentTime - lastFrameTimeRef.current, 33.3);
       lastFrameTimeRef.current = currentTime;
 
-      // Update physics (dt = 1 frame unit)
-      const updatedBubbles = updateAllBubbles(
-        bubblesRef.current,
-        boundary,
-        textBoundsRef.current,
-        timeRef.current,
-        deltaTime,
-        params
-      );
+      // Calculate updated bubble positions
+      let updatedBubbles = bubbles;
+      let remaining = deltaTime / 16.67; // Normalize to frame units
+      let safety = 0;
 
-      bubblesRef.current = updatedBubbles;
-      timeRef.current += deltaTime;
+      while (remaining > 0 && safety < 8) {
+        const step = Math.min(1, remaining);
+        updatedBubbles = updateAllBubbles(
+          updatedBubbles,
+          boundary,
+          textBoundsRef.current,
+          timeRef.current,
+          step,
+          params
+        );
+        timeRef.current += step;
+        remaining -= step;
+        safety++;
+      }
+
+      // Update React state for next frame
+      setBubbles(updatedBubbles);
 
       // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -304,8 +340,10 @@ export default function PhysicsHero({
         cancelAnimationFrame(animationRef.current);
       }
       window.removeEventListener('resize', resizeCanvas);
+      if (ro) ro.disconnect();
     };
-  }, [boundary, params, imagesLoaded, bubbles, textBounds]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [boundary, params, imagesLoaded, bubbles.length]);
 
   return (
     <section className={styles.hero} ref={containerRef}>
@@ -313,23 +351,23 @@ export default function PhysicsHero({
       <div className={styles.content}>
         <h1 className={styles.title}>
           <span className={styles.textInner} ref={titleRef}>
-            Queer Swing Dance
-            <br />
-            Exchange Zürich
+            {t('title')}
           </span>
         </h1>
         <p className={styles.dates}>
           <span className={styles.textInner} ref={datesRef}>
-            19th - 21st June 2026
+            {t('dates')}
           </span>
         </p>
         <p className={styles.tagline}>
           <span className={styles.textInner} ref={taglineRef}>
-            Stay tuned for more information!
+            {t('tagline')}
           </span>
         </p>
+        <div className={styles.newsletterWrapper} ref={newsletterRef}>
+          <NewsletterForm />
+        </div>
       </div>
     </section>
   );
 }
-

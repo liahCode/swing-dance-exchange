@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sukhumvit+Set:wght@400;500;600;700&display=swap');
 
 /* Accessibility */
 .visually-hidden {
@@ -18,18 +19,14 @@ body {
     margin: 0;
     padding: 0;
     background: #e9eef9;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    font-family: 'Georgia', serif;
+    font-family: 'Nunito', sans-serif;
 }
 
 /* Header and Navigation */
 header {
     width: 100%;
     padding: 1rem 2rem;
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
+    background-color: transparent;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -72,11 +69,21 @@ header nav a:hover {
     display: flex;
     flex-direction: column;
     gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    width: 100%;
 }
 
 @media (min-width: 640px) {
     .page-container {
         gap: 4rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-container {
+        padding: 1rem;
     }
 }
 
@@ -144,6 +151,7 @@ a:not(.btn):hover {
 
 html, body {
     height: 100%;
+    overflow-x: hidden;
 }
 
 /* Main content */
@@ -648,7 +656,7 @@ main .home-content {
     width: 100%;
     border-collapse: collapse;
     background-color: white;
-    font-family: Arial, sans-serif;
+    font-family: 'Nunito', sans-serif;
     font-size: 14px;
 }
 
