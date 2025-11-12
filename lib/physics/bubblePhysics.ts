@@ -68,26 +68,43 @@ export interface TextBounds {
 }
 
 /**
- * Default physics parameters (tuned for visual appeal)
+ * Default physics parameters (tuned for calm, aesthetic motion)
  */
 export const defaultPhysicsParams: PhysicsParams = {
-  beta0: 0.15,
+  // High damping for calm, floating motion
+  beta0: 0.992,        // Very high damping (was 0.15)
   dragExponent: 1.0,
-  noiseStrength: 1200,  // Slightly reduced; curl will add energy
-  noiseLengthScale: 350,
-  noiseTimeScale: 500,
-  curlStrength: 1400,
-  flowMix: 0.65,       // Blend more curl (swirl) than gradient
-  boundaryStiffness: 6.0,  // Matched to text repulsion for consistent edge behavior
-  boundaryDistance: 15,
-  bubbleRepulsion: 0.015,
+
+  // Gentle ambient drift
+  noiseStrength: 0.25,       // Very gentle (was 1200)
+  noiseLengthScale: 350,     // Keep smooth patterns
+  noiseTimeScale: 5000,      // Slow evolution (was 500)
+
+  // Curl force (reduced but kept for smooth flow)
+  curlStrength: 0.3,         // Very gentle (was 1400)
+  flowMix: 0.65,             // Blend more curl (swirl) than gradient
+
+  // Soft boundary repulsion
+  boundaryStiffness: 2.0,    // Gentle (was 6.0)
+  boundaryDistance: 50,      // Early activation (was 15)
+
+  // Bubble-to-bubble avoidance
+  bubbleRepulsion: 2.0,      // Smooth repulsion (was 0.015)
+
+  // Spread/anti-clumping (reduced)
   spreadRadius: 220,
-  spreadPressure: 0.05,
-  desyncStrength: 0.015,
+  spreadPressure: 0.01,      // Lower (was 0.05)
+
+  // Desync (reduced)
+  desyncStrength: 0.005,     // Lower (was 0.015)
   desyncDistance: 140,
-  textRepulsionDistance: 20,
-  textRepulsionStiffness: 6.0,  // 10x from 0.6 for very strong text avoidance
-  maxStepDistance: 12,
+
+  // Text avoidance (smooth and early)
+  textRepulsionDistance: 150,    // Early activation (was 20)
+  textRepulsionStiffness: 2.0,   // Gentle (was 6.0)
+
+  // Safety limits
+  maxStepDistance: 5,        // Smaller steps (was 12)
 };
 
 /**
@@ -339,10 +356,10 @@ export function computeCurlNoiseForce(
 /**
  * Compute boundary repulsion force
  *
- * For each wall we treat the bubble as a circle interacting with an inverse-square
- * (Coulomb-style) potential that activates within `boundaryDistance` pixels of the wall.
- * The force smoothly goes to zero at that activation distance and ramps up rapidly as the
- * bubble approaches the wall, preventing visible clipping without harsh reflections.
+ * Uses a gentle linear ramp for soft, aesthetic boundary containment.
+ * Force activates early (at boundaryDistance) and ramps up smoothly as the
+ * bubble approaches the wall. This creates a "staying in the room naturally"
+ * effect rather than bouncing off walls.
  *
  * Each wall contributes independently; near corners the contributions add vectorially.
  */
@@ -354,33 +371,33 @@ export function computeBoundaryForce(
   const { xMin, xMax, yMin, yMax } = boundary;
   const { x, y } = position;
 
-  const threshold = Math.max(params.boundaryDistance, 1);
-  const k = params.boundaryStiffness * threshold * threshold;
+  const buffer = params.boundaryDistance;
+  const stiffness = params.boundaryStiffness;
   const force: Vec2 = { x: 0, y: 0 };
 
-  const applyCoulomb = (distance: number, normal: Vec2) => {
-    if (distance >= threshold) {
-      return;
-    }
-    const clamped = Math.max(distance, 1);
-    const invSq = 1 / (clamped * clamped);
-    const invThresholdSq = 1 / (threshold * threshold);
-    const magnitude = k * (invSq - invThresholdSq);
-    if (magnitude <= 0) {
-      return;
-    }
-    force.x += magnitude * normal.x;
-    force.y += magnitude * normal.y;
-  };
+  // Left boundary: repel right
+  if (x < xMin + buffer) {
+    const penetration = (xMin + buffer) - x;
+    force.x += (penetration / buffer) * stiffness;
+  }
 
-  // Left wall: normal points right (+x)
-  applyCoulomb(x - xMin, { x: 1, y: 0 });
-  // Right wall: normal points left (-x)
-  applyCoulomb(xMax - x, { x: -1, y: 0 });
-  // Top wall: normal points down (+y)
-  applyCoulomb(y - yMin, { x: 0, y: 1 });
-  // Bottom wall: normal points up (-y)
-  applyCoulomb(yMax - y, { x: 0, y: -1 });
+  // Right boundary: repel left
+  if (x > xMax - buffer) {
+    const penetration = x - (xMax - buffer);
+    force.x -= (penetration / buffer) * stiffness;
+  }
+
+  // Top boundary: repel down
+  if (y < yMin + buffer) {
+    const penetration = (yMin + buffer) - y;
+    force.y += (penetration / buffer) * stiffness;
+  }
+
+  // Bottom boundary: repel up
+  if (y > yMax - buffer) {
+    const penetration = y - (yMax - buffer);
+    force.y -= (penetration / buffer) * stiffness;
+  }
 
   return force;
 }
@@ -511,6 +528,9 @@ export function computeDesyncForce(
 
 /**
  * Compute text repulsion force
+ *
+ * Uses gentle linear falloff for smooth, aesthetic text avoidance.
+ * Creates a soft buffer zone around text where bubbles are gently pushed away.
  */
 export function computeTextRepulsionForce(
   position: Vec2,
@@ -534,27 +554,24 @@ export function computeTextRepulsionForce(
   if (!minEdge) return { x: 0, y: 0 };
 
   const threshold = Math.max(params.textRepulsionDistance, 1);
-  const k = params.textRepulsionStiffness; // use stiffness directly with smooth shaping
+  const k = params.textRepulsionStiffness;
 
-  // Outside: sd >= 0; Inside: sd < 0
+  // Outside the threshold: no force
   if (minSigned >= threshold) {
     return { x: 0, y: 0 };
   }
 
-  let t: number;
-  let magnitude: number;
-  if (minSigned >= 0) {
-    // Outside but within threshold: smoothly ramp up as approach boundary
-    t = 1 - clamp01(minSigned / threshold);        // 1 at boundary, 0 at threshold
-    magnitude = k * smoothstep(t);                 // finite, smooth
-  } else {
-    // Inside: push outward strongly but with finite cap to avoid teleports
-    const penetration = -minSigned;                // 0 at boundary, grows deeper inside
-    t = clamp01(penetration / threshold);          // 0..1
-    magnitude = k * (0.6 + 0.8 * smoothstep(t));  // ~0.6k..1.4k
-  }
+  // Gentle linear ramp: strength increases as bubble gets closer
+  // At threshold distance: force = 0
+  // At boundary (distance 0): force = k
+  // Inside (negative distance): force increases proportionally
+  const normalizedDistance = minSigned / threshold;  // 1 at threshold, 0 at boundary, negative inside
+  const strength = k * (1 - normalizedDistance);     // Linear ramp from 0 to k and beyond
 
-  return { x: magnitude * minEdge.normal.x, y: magnitude * minEdge.normal.y };
+  return {
+    x: strength * minEdge.normal.x,
+    y: strength * minEdge.normal.y
+  };
 }
 
 /**
@@ -622,54 +639,53 @@ export function updateBubble(
   // Compute total force
   const force = computeTotalForce(bubble, allBubbles, boundary, textBounds, time, params);
 
-  // Compute drag coefficient
-  const beta = computeDrag(bubble.radius, params);
+  // Start with current velocity
+  let vx = bubble.velocity.x;
+  let vy = bubble.velocity.y;
 
-  // Overdamped velocity: v = F / β
-  let velocity: Vec2 = vec2.scale(force, 1 / beta);
+  // Apply forces (with scaling factor for gentle integration)
+  const forceScale = 0.008;
+  vx += force.x * dt * forceScale;
+  vy += force.y * dt * forceScale;
 
-  // Cap maximum velocity to prevent jumps; also respect max displacement per step
-  const maxVelocity = 20;
-  const velocityMagnitude = vec2.length(velocity);
-  if (velocityMagnitude > maxVelocity) {
-    velocity = vec2.scale(velocity, maxVelocity / velocityMagnitude);
+  // Apply damping (high damping = calm, floating motion)
+  const damping = params.beta0;  // Reused beta0 as damping coefficient
+  vx *= damping;
+  vy *= damping;
+
+  // Cap maximum speed for aesthetic slow motion
+  const maxSpeed = 0.5;
+  const speed = Math.sqrt(vx * vx + vy * vy);
+  if (speed > maxSpeed) {
+    vx = (vx / speed) * maxSpeed;
+    vy = (vy / speed) * maxSpeed;
   }
 
-  // Clamp displacement per substep to avoid visible teleports on long frames
-  const maxDisp = Math.max(1, params.maxStepDistance);
-  const disp = velocityMagnitude * dt;
-  if (disp > maxDisp && velocityMagnitude > 0) {
-    const scale = maxDisp / disp;
-    velocity = vec2.scale(velocity, scale);
-  }
+  // Update position
+  let x = bubble.position.x + vx;
+  let y = bubble.position.y + vy;
 
-  // Update position: x_new = x_old + dt · v
-  const newPosition = vec2.add(bubble.position, vec2.scale(velocity, dt));
-
-  // Clamp position to boundary (hard constraint, shouldn't trigger if repulsion works)
+  // Hard clamp to boundary (safety net)
   const effectiveXMin = boundary.xMin + bubble.radius;
   const effectiveXMax = boundary.xMax - bubble.radius;
   const effectiveYMin = boundary.yMin + bubble.radius;
   const effectiveYMax = boundary.yMax - bubble.radius;
 
-  const clampedPosition = {
-    x:
-      effectiveXMin <= effectiveXMax
-        ? Math.max(effectiveXMin, Math.min(effectiveXMax, newPosition.x))
-        : (boundary.xMin + boundary.xMax) / 2,
-    y:
-      effectiveYMin <= effectiveYMax
-        ? Math.max(effectiveYMin, Math.min(effectiveYMax, newPosition.y))
-        : (boundary.yMin + boundary.yMax) / 2,
-  };
+  x = effectiveXMin <= effectiveXMax
+    ? Math.max(effectiveXMin, Math.min(effectiveXMax, x))
+    : (boundary.xMin + boundary.xMax) / 2;
 
-  // Update rotation: θ_new = θ_old + ω · dt
+  y = effectiveYMin <= effectiveYMax
+    ? Math.max(effectiveYMin, Math.min(effectiveYMax, y))
+    : (boundary.yMin + boundary.yMax) / 2;
+
+  // Update rotation
   const newRotation = bubble.rotation + bubble.angularVelocity * dt;
 
   return {
     ...bubble,
-    position: clampedPosition,
-    velocity,
+    position: { x, y },
+    velocity: { x: vx, y: vy },
     rotation: newRotation,
   };
 }

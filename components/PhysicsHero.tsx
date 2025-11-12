@@ -27,7 +27,7 @@ const DEBUG_DRAW_BOUNDARY = false;
 const DEBUG_DRAW_CONTAINER = false;
 
 export default function PhysicsHero({
-  bubbleCount = 15,
+  bubbleCount = 5,
   physicsParams = {},
 }: PhysicsHeroProps) {
   const t = useTranslations('hero');
@@ -217,9 +217,6 @@ export default function PhysicsHero({
       ro.observe(containerRef.current);
     }
 
-    // Use ref to track current bubbles
-    const bubblesRef = { current: bubbles };
-
     const animate = (currentTime: number) => {
       if (!ctx) return;
 
@@ -230,16 +227,15 @@ export default function PhysicsHero({
         return;
       }
 
-      // Calculate delta time (cap at 50ms to prevent large jumps)
-      const deltaTime = lastFrameTimeRef.current
-        ? Math.min((currentTime - lastFrameTimeRef.current) / 16.67, 3) // Normalize to ~60fps
-        : 1;
+      // Calculate delta time (cap at 33.3ms for 30fps target)
+      const deltaTime = Math.min(currentTime - lastFrameTimeRef.current, 33.3);
       lastFrameTimeRef.current = currentTime;
 
-      // Substep integration to avoid large single-step moves on long frames
-      let remaining = deltaTime;
-      let updatedBubbles = bubblesRef.current;
+      // Calculate updated bubble positions
+      let updatedBubbles = bubbles;
+      let remaining = deltaTime / 16.67; // Normalize to frame units
       let safety = 0;
+
       while (remaining > 0 && safety < 8) {
         const step = Math.min(1, remaining);
         updatedBubbles = updateAllBubbles(
@@ -255,7 +251,8 @@ export default function PhysicsHero({
         safety++;
       }
 
-      bubblesRef.current = updatedBubbles;
+      // Update React state for next frame
+      setBubbles(updatedBubbles);
 
       // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -345,7 +342,8 @@ export default function PhysicsHero({
       window.removeEventListener('resize', resizeCanvas);
       if (ro) ro.disconnect();
     };
-  }, [boundary, params, imagesLoaded, bubbles, textBounds]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [boundary, params, imagesLoaded, bubbles.length]);
 
   return (
     <section className={styles.hero} ref={containerRef}>

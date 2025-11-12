@@ -18,7 +18,7 @@ export async function subscribeToNewsletter(
 
   if (!validatedFields.success) {
     return {
-      error: validatedFields.error.errors[0].message,
+      error: validatedFields.error.issues[0].message,
     };
   }
 
