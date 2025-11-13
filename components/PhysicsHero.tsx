@@ -347,7 +347,8 @@ export default function PhysicsHero({
 
   return (
     <section className={styles.hero} ref={containerRef}>
-      <canvas ref={canvasRef} className={styles.physicsCanvas} />
+      {/* Background bubble animation disabled - only navigation bubbles remain active */}
+      {/* <canvas ref={canvasRef} className={styles.physicsCanvas} /> */}
       <div className={styles.content}>
         <h1 className={styles.title}>
           <span className={styles.textInner} ref={titleRef}>
