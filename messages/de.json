@@ -50,7 +50,19 @@
       "title": "Team"
     },
     "codeOfConduct": {
-      "title": "Verhaltenskodex"
+      "title": "Verhaltenskodex",
+      "points": [
+        "Keine Diskriminierung, aufgrund von Alter, Herkunft, Geschlecht, sexueller Orientierung, Geschlechtsidentität, Aussehen, Tanzniveau oder anderen Merkmalen.",
+        "Nur ein Ja ist ein Ja. Frage nach, anstatt Annahmen zu treffen.",
+        "Eine Tanzeinladung abzulehnen ist völlig in Ordnung – nimm es nicht persönlich.",
+        "Teile deine Bedürfnisse offen und respektvoll mit – lass deine Tanzpartner nicht raten.",
+        "Alle erdenklichen Tanzkonstellationen wie Follower&Leader, Switch, Stehlen oder Solotanzen sind willkommen. Stelle zu Beginn sicher, dass sich alle Beteiligten damit wohlfühlen.",
+        "Achte auf den Platz um dich herum und tanze rücksichtsvoll.",
+        "Frage um Erlaubnis, bevor du fotografierst oder filmst.",
+        "Halte dich frisch mit Wechselshirts, Deo, Kaugummi und Co.",
+        "Wende dich an das Care-Team, falls du einen Vorfall bemerkst oder Unterstützung brauchst.",
+        "Praktiziere einen verantwortungsvollen Umgang mit Alkohol und Drogen."
+      ]
     },
     "venue": {
       "title": "Ort",

@@ -50,7 +50,19 @@
       "title": "Team"
     },
     "codeOfConduct": {
-      "title": "Code of Conduct"
+      "title": "Code of Conduct",
+      "points": [
+        "No discrimination based on age, origin, gender, sexual orientation, gender identity, appearance, dance level, or any other characteristics.",
+        "Only yes means yes. Ask rather than assume.",
+        "Declining an invitation to dance is completely fine — don't take it personally.",
+        "Communicate your needs openly and respectfully — don't make your dance partners guess.",
+        "All imaginable dance constellations, such as follower & leader, switching, stealing, or solo dancing are welcome. Make sure at the beginning that everyone involved feels comfortable with it.",
+        "Be aware of the space around you and dance considerately.",
+        "Ask for permission before taking photos or recording videos.",
+        "Keep yourself fresh with spare shirts, deodorant, gum, and similar items.",
+        "Contact the care team if you notice an incident or need support.",
+        "Practice responsible use of alcohol and drugs."
+      ]
     },
     "venue": {
       "title": "Venue",
