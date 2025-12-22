@@ -2,10 +2,7 @@
   width: 100%;
   padding: 20px 0;
   background-color: transparent;
-  position: sticky;
-  top: 20px;
   margin-top: 20px;
-  z-index: 100;
 }
 
 .mainBubbles {
@@ -20,6 +17,12 @@
 
 .menuItem {
   position: relative;
+}
+
+.disabledBubble {
+  opacity: 0.45;
+  pointer-events: none;
+  filter: grayscale(0.35);
 }
 
 .submenuCard {

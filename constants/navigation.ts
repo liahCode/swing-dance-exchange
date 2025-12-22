@@ -7,6 +7,7 @@ export interface MenuItem {
   labelKey: string;
   href?: string;
   submenu?: SubMenuItem[];
+  disabled?: boolean;
 }
 
 export const MAIN_MENU: MenuItem[] = [
@@ -25,6 +26,7 @@ export const MAIN_MENU: MenuItem[] = [
   },
   {
     labelKey: 'navigation.whatIs.label',
+    disabled: true,
     submenu: [
       { labelKey: 'navigation.whatIs.lindyHop', href: '/what-is/lindy-hop' },
       { labelKey: 'navigation.whatIs.exchange', href: '/what-is/exchange' },
