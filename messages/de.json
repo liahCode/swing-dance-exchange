@@ -32,8 +32,40 @@
   },
   "hero": {
     "title": "Queer Swing Dance Exchange Zürich",
-    "dates": "19. - 21. Juni 2026",
+    "dates": "19.–21. Juni 2026",
     "tagline": "Abonniere für Updates und Early-Bird-Zugang!"
+  },
+  "landing": {
+    "whatIsQSXZ": {
+      "title": "Was ist QSXZ?",
+      "content": "Eine besondere Veranstaltung, die die Zürcher Swing Dance Szene und die wunderschöne Vielfalt der queeren Community zusammenbringt. Tanzen, vernetzen und die lokale Szene erleben — während wir Inklusion und Vielfalt auf allen Ebenen feiern.",
+      "learnMore": "Unsere Vision"
+    },
+    "whatToExpect": {
+      "title": "Was erwartet dich",
+      "content": "Keine formellen Kurse — entspannte Workshops, Tagesaktivitäten in queeren Räumen und viel Tanzen & Community. Nimm mit uns an der Pride-Parade am 20. Juni teil!",
+      "learnMore": "Programm folgt!"
+    },
+    "venue": {
+      "title": "Der Veranstaltungsort",
+      "content": "Flow60 — Zwei Räume, Terrasse, vollständig barrierefrei (Aufzug, stufenloser Zugang, geschlechtsneutrale Toiletten)",
+      "detailsButton": "Mehr zum Veranstaltungsort"
+    },
+    "pride": {
+      "title": "Pride-Wochenende",
+      "content": "QSXZ findet während des Zürich Pride Wochenendes statt — marschiere am Samstag mit uns bei der Parade! Dies ist mehr als ein Tanzevent; es ist eine Feier von queerer Freude, Sichtbarkeit und Gemeinschaft.",
+      "learnMore": "Zürich Pride Website"
+    },
+    "artists": {
+      "title": "Musik & Auftritte",
+      "content": "Live Swing-Bands, talentierte DJs und spektakuläre Drag-Performances. Wir bringen Künstler*innen zusammen, die den Geist von queerer Feier und Swing-Tanz verkörpern.",
+      "learnMore": "Line-up folgt!"
+    },
+    "city": {
+      "title": "Entdecke Zürich",
+      "content": "Eine wunderschöne, queerfreundliche Stadt mit atemberaubendem Seeblick, lebendigem Nachtleben und hervorragendem öffentlichen Verkehr. Nimm an unseren Stadtführungen teil und entdecke Ecken von Zürich, die du sonst vielleicht nie sehen würdest — von versteckten queeren Orten bis zur Swing-Tanz-Geschichte.",
+      "learnMore": "Reiseinfos"
+    }
   },
   "pages": {
     "contact": {

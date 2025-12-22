@@ -1,92 +1,50 @@
 # Impressum
 
-**Angaben gemäß schweizerischem und deutschem Recht**
+## Angaben gemäß Schweizer Recht (UWG) sowie deutschem Recht (§ 5 DDG)
+**Queer Swing Dance Exchange Zürich**  
+Rechtsform: **Verein in Gründung (Verein i.G.)**  
+*(Nach Eintrag/UID bitte aktualisieren.)*
 
-## Organisation
-
-**Name:** [Organisationsname / Vereinsname]
-**Rechtsform:** [z.B. "eingetragener Verein (e.V.)" / "Verein" / "Informelle Gruppe"]
-
-## Anschrift
-
-[Straße und Hausnummer]
-[Postleitzahl und Ort]
+## Postanschrift (ladungsfähige Adresse)
+[Strasse Nr.]  
+[PLZ Ort]  
 Schweiz
 
-**Hinweis:** Postfachadressen genügen nicht für die deutsche Rechtspflicht. Eine physische Adresse ist erforderlich.
-
 ## Kontakt
-
-**E-Mail:** [direkt-kontakt@beispiel.ch]
-**Telefon:** [+41 XX XXX XX XX]
-**Fax:** [falls zutreffend]
-
-**Wichtig:** Die E-Mail-Adresse muss eine direkte, uneingeschränkte Kommunikation ermöglichen (reine Autoresponder-Adressen erfüllen die gesetzlichen Anforderungen nicht).
+E-Mail: [kontakt@domain.tld]  
+Telefon: [+41 …] *(empfohlen)*
 
 ## Vertretungsberechtigte Personen
+Der Verein wird vertreten durch (gemäss Statuten / Gründungsbeschluss):
+- [Vorname Nachname], [Funktion, z.B. Präsident:in]
+- [Vorname Nachname], [Funktion]
+- [Vorname Nachname], [Funktion]
 
-Gemäß der Satzung/den Statuten der Organisation sind folgende Personen zur Vertretung berechtigt:
+Zeichnungsberechtigung: [Einzelunterschrift / Kollektivunterschrift zu zweien]
 
-- [Name, Funktion (z.B. Präsident/Vorstand)]
-- [Name, Funktion (z.B. Vizepräsident)]
-- [Name, Funktion (z.B. Kassenwart/Schatzmeister)]
+## Register / UID / MWST (falls vorhanden)
+Handelsregistereintrag: **Nicht im Handelsregister eingetragen (noch in Gründung)**  
+UID: [CHE-…] *(falls vorhanden)*  
+MWST-Nr.: [CHE-… MWST] *(falls vorhanden; sonst: Nicht zutreffend)*
 
-**Vertretungsbefugnis:** [Gesamtvertretung / Einzelvertretung - gemäß Satzung]
+## Hosting
+Diese Website / das Booking-System wird in Deutschland gehostet bei:  
+**ALL-INKL.COM – Neue Medien Münnich**, Hauptstraße 68, 02742 Friedersdorf, Deutschland.  
+(Serverstandort Deutschland, Rechenzentren in Dresden.)  
 
-## Registereintrag
+## Verbraucherstreitbeilegung
+Wir sind weder verpflichtet noch bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
 
-**Registergericht:** [Name des Registergerichts, falls zutreffend]
-**Registernummer:** [Nummer, falls zutreffend]
-**Registerart:** [Vereinsregister / Handelsregister / nicht eingetragen]
+*(Hinweis: Die frühere EU-Online-Streitbeilegungsplattform (ODR) ist seit 20.07.2025 eingestellt.)*
 
-*Falls nicht eingetragen, angeben: "Nicht eingetragen"*
+## Haftung für Inhalte
+Wir erstellen die Inhalte dieser Website mit Sorgfalt. Für Richtigkeit, Vollständigkeit und Aktualität übernehmen wir jedoch keine Gewähr, soweit gesetzlich zulässig.
 
-## Steuerinformationen
+## Haftung für Links
+Diese Website kann Links zu externen Websites Dritter enthalten. Für deren Inhalte sind ausschließlich deren Betreiber verantwortlich.
 
-**Umsatzsteuer-Identifikationsnummer:** [CHE-XXX.XXX.XXX MWST, falls zutreffend]
-**Wirtschafts-Identifikationsnummer:** [falls zutreffend]
-
-*Falls nicht zutreffend, angeben: "Nicht zutreffend"*
-
-## Verantwortlich für redaktionelle Inhalte
-
-Gemäß den presserechtlichen Bestimmungen ist folgende Person für die redaktionellen Inhalte dieser Website verantwortlich:
-
-**Name:** [Vor- und Nachname]
-**Anschrift:** [Straße und Hausnummer]
-[Postleitzahl und Ort]
-[Land]
-
-## Aufsichtsbehörde
-
-[Name und Anschrift der Aufsichtsbehörde, falls zutreffend]
-
-*Falls nicht zutreffend, angeben: "Nicht zutreffend"*
-
-## Online-Streitbeilegung
-
-Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: https://ec.europa.eu/consumers/odr
-
-Wir sind weder bereit noch verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
-
-## Haftungsausschluss
-
-Die auf dieser Website bereitgestellten Informationen dienen ausschließlich allgemeinen Informationszwecken. Obwohl wir uns bemühen, die Informationen korrekt und aktuell zu halten, übernehmen wir keine ausdrücklichen oder stillschweigenden Garantien oder Zusicherungen hinsichtlich der Vollständigkeit, Richtigkeit, Zuverlässigkeit, Eignung oder Verfügbarkeit der Informationen, Produkte, Dienstleistungen oder zugehörigen Grafiken auf der Website.
-
-Jegliches Vertrauen, das Sie in solche Informationen setzen, erfolgt ausschließlich auf eigenes Risiko. Wir haften in keinem Fall für Verluste oder Schäden, einschließlich ohne Einschränkung indirekter oder Folgeschäden, oder für Verluste oder Schäden, die aus Datenverlusten oder Gewinnen entstehen, die sich aus oder im Zusammenhang mit der Nutzung dieser Website ergeben.
-
-## Urheberrecht
-
-Alle Inhalte dieser Website, einschließlich Texte, Grafiken, Logos, Bilder, Audio-Clips, Video-Clips und Software, sind Eigentum des Queer Swing Dance Exchange Zürich oder seiner Inhaltslieferanten und durch schweizerische und internationale Urheberrechtsgesetze geschützt.
-
-Die unbefugte Nutzung, Vervielfältigung oder Verbreitung von Materialien dieser Website ist strengstens untersagt und kann rechtliche Schritte nach sich ziehen.
+## Urheberrechte
+Sofern nicht anders angegeben, sind alle Inhalte dieser Website urheberrechtlich geschützt.
 
 ## Datenschutz
-
-Informationen darüber, wie wir Ihre personenbezogenen Daten erheben, verwenden und schützen, finden Sie in unserer [Datenschutzerklärung](../privacy).
-
----
-
-**Letzte Aktualisierung:** [Datum]
-
-*Dieses Impressum muss aktuell gehalten werden. Aktualisierung erforderlich bei Änderungen der Kontaktdaten, Vertretungsberechtigten oder Rechtsform.*
+Datenschutzinformationen finden Sie in unserer Datenschutzerklärung: [Link]

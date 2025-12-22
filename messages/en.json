@@ -32,8 +32,40 @@
   },
   "hero": {
     "title": "Queer Swing Dance Exchange Zürich",
-    "dates": "19th - 21st June 2026",
+    "dates": "19–21 June 2026",
     "tagline": "Subscribe for updates and early bird access!"
+  },
+  "landing": {
+    "whatIsQSXZ": {
+      "title": "What is QSXZ?",
+      "content": "A special event bringing together the Zurich Swing Dance scene and the beautiful diversity of the queer community. Dance, connect, and experience the local scene — while celebrating inclusion and diversity at every level.",
+      "learnMore": "About Our Vision"
+    },
+    "whatToExpect": {
+      "title": "What to Expect",
+      "content": "No formal classes — relaxed workshops, daytime activities linked to queer spaces, and lots of dancing & community. Join the Pride parade with us on June 20!",
+      "learnMore": "Schedule coming soon!"
+    },
+    "venue": {
+      "title": "The Venue",
+      "content": "Flow60 — Two rooms, terrace, fully accessible (elevator, step-free, gender-neutral bathrooms)",
+      "detailsButton": "More About the Venue"
+    },
+    "pride": {
+      "title": "Pride Weekend",
+      "content": "QSXZ takes place during Zürich Pride weekend — join us marching in the parade on Saturday! This is more than a dance event; it's a celebration of queer joy, visibility, and community.",
+      "learnMore": "Zürich Pride Website"
+    },
+    "artists": {
+      "title": "Music & Performers",
+      "content": "Live swing bands, talented DJs, and spectacular drag performances. We're bringing together artists who embody the spirit of queer celebration and swing dance.",
+      "learnMore": "Lineup coming soon!"
+    },
+    "city": {
+      "title": "Discover Zürich",
+      "content": "A beautiful, queer-friendly city with stunning lake views, vibrant nightlife, and excellent public transport. Join our city tours and discover corners of Zürich you might not otherwise see — from hidden queer spaces to swing dance history.",
+      "learnMore": "Travel Info"
+    }
   },
   "pages": {
     "contact": {
