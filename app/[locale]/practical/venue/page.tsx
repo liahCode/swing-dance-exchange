@@ -1,14 +1,16 @@
-'use client';
+import fs from 'fs';
+import path from 'path';
+import MarkdownContent from '@/components/MarkdownContent';
+import { getLocale } from 'next-intl/server';
 
-import { useTranslations } from 'next-intl';
+export default async function VenuePage() {
+  const locale = await getLocale();
+  const filePath = path.join(process.cwd(), `content/${locale}/practical/venue.md`);
+  const markdownContent = fs.readFileSync(filePath, 'utf8');
 
-export default function Page() {
-  const t = useTranslations('pages.venue');
   return (
     <div className="page-container">
-      <h1 className="page-title">{t('title')}</h1>
-      <p>{t('comingSoon')}</p>
+      <MarkdownContent content={markdownContent} />
     </div>
   );
 }
-

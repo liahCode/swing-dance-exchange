@@ -18,6 +18,12 @@ export default function Navigation() {
     const menuItem = MAIN_MENU[index];
     console.log('🔍 Click handler called - index:', index, 'menuItem:', menuItem.labelKey);
 
+    // Do nothing for disabled menu entries
+    if (menuItem.disabled) {
+      console.log('  ⛔ Disabled menu item, ignoring click');
+      return;
+    }
+
     // If it has a direct href (like Contact), close mobile menu and navigate
     if (menuItem.href) {
       console.log('  ℹ️  Has href, closing mobile menu');
@@ -98,6 +104,7 @@ export default function Navigation() {
           const hasSubmenu = !!(item.submenu && item.submenu.length > 0);
           const isActive = activeMenu === index;
           const mainBubbleVariant = ((index * 3 + 1) % 15) + 1;
+          const isDisabled = !!item.disabled;
 
           // Debug logging
           if (hasSubmenu) {
@@ -122,6 +129,8 @@ export default function Navigation() {
                     bubbleNumber={bubbleNumber}
                     isActive={isActive}
                     animationVariant={mainBubbleVariant}
+                    className={isDisabled ? styles.disabledBubble : ''}
+                    interactive={!isDisabled}
                   />
                 </Link>
               ) : (
@@ -129,14 +138,16 @@ export default function Navigation() {
                   label={t(item.labelKey)}
                   size={40}
                   bubbleNumber={bubbleNumber}
-                  onClick={() => handleMainBubbleClick(index)}
+                  onClick={isDisabled ? undefined : () => handleMainBubbleClick(index)}
                   isActive={isActive}
                   animationVariant={mainBubbleVariant}
+                  className={isDisabled ? styles.disabledBubble : ''}
+                  interactive={!isDisabled}
                 />
               )}
 
               {/* Desktop Submenu (shown inline) */}
-              {hasSubmenu && isActive && item.submenu && (
+              {hasSubmenu && !isDisabled && isActive && item.submenu && (
                 <div className={`${styles.submenuCard} ${styles.desktopOnly}`}>
                   <div className={styles.submenu}>
                     {item.submenu.map((subItem, subIndex) => {
@@ -234,4 +245,3 @@ export default function Navigation() {
     </nav>
   );
 }
-
