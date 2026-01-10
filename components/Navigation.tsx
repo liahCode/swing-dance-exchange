@@ -48,28 +48,42 @@ export default function Navigation() {
         setMobileMenuOpen(true);
     };
 
-    // Close mobile menu when clicking outside
+    // Close mobile menu and desktop submenus when clicking outside
     React.useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            if (!mobileMenuOpen) return;
-
             const target = event.target as HTMLElement;
             const menuPanel = document.querySelector(`.${styles.mainBubbles}`);
             const hamburger = document.querySelector(`.${styles.mobileMenuToggle}`);
 
-            if (
-                menuPanel &&
-                hamburger &&
-                !menuPanel.contains(target) &&
-                !hamburger.contains(target)
-            ) {
-                setMobileMenuOpen(false);
+            // Close mobile menu when clicking outside
+            if (mobileMenuOpen) {
+                if (
+                    menuPanel &&
+                    hamburger &&
+                    !menuPanel.contains(target) &&
+                    !hamburger.contains(target)
+                ) {
+                    setMobileMenuOpen(false);
+                }
+            }
+
+            // Close desktop submenu when clicking outside
+            if (activeMenu !== null && !mobileMenuOpen) {
+                const submenuCard = document.querySelector(`.${styles.submenuCard}`);
+
+                if (
+                    menuPanel &&
+                    !menuPanel.contains(target) &&
+                    (!submenuCard || !submenuCard.contains(target))
+                ) {
+                    setActiveMenu(null);
+                }
             }
         };
 
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [mobileMenuOpen]);
+    }, [mobileMenuOpen, activeMenu]);
 
     return (
         <nav className={styles.navigation}>

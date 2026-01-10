@@ -179,6 +179,8 @@
     transition: left 0.3s ease-out;
     z-index: 999;
     box-shadow: 4px 0 16px rgba(0, 0, 0, 0.12);
+    justify-content: flex-start;
+    align-items: flex-start;
   }
 
   /* Show menu when open */
