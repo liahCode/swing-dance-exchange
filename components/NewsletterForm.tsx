@@ -1,13 +1,20 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { subscribeToNewsletter } from '@/app/[locale]/actions/newsletter';
+import { subscribeToNewsletter, subscribeToNewsletterFake } from '@/app/[locale]/actions/newsletter';
 import styles from './NewsletterForm.module.css';
 
 export default function NewsletterForm() {
   const t = useTranslations('newsletter');
-  const [state, formAction, isPending] = useActionState(subscribeToNewsletter, null);
+  const [state, formAction, isPending] = useActionState(subscribeToNewsletterFake, null);
+
+  // Show alert for fake subscription
+  useEffect(() => {
+    if (state?.success && state?.isFake && state?.email) {
+      alert(`Newsletter subscription (Demo Mode)\n\nEmail: ${state.email}\n\nIn production, this would subscribe you to our newsletter via MailerLite.`);
+    }
+  }, [state]);
 
   return (
     <div className={styles.container}>
