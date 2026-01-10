@@ -20,6 +20,9 @@ body {
     padding: 0;
     background: #e9eef9;
     font-family: 'Nunito', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 /* Header and Navigation */
@@ -147,8 +150,11 @@ a:hover {
     font-size: 0.9em;
 }
 
-html, body {
+html {
     height: 100%;
+}
+
+body {
     overflow-x: hidden;
 }
 
@@ -330,6 +336,9 @@ main .home-content {
         margin: 0;
         overflow-y: auto;
         max-height: none;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
     }
 
     .content-wrapper {

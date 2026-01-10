@@ -87,7 +87,7 @@
   }
 }
 
-/* Zig-zag offset pattern */
+/* Equal indentation for all submenu items */
 .submenuItem.leftAligned {
   align-self: flex-start;
   margin-left: 0;
@@ -95,7 +95,7 @@
 
 .submenuItem.rightAligned {
   align-self: flex-start;
-  margin-left: 15px;
+  margin-left: 0;
 }
 
 /* Mobile Hamburger Menu */
@@ -228,7 +228,7 @@
   }
 
   .submenuItem.rightAligned {
-    margin-left: 20px;
+    margin-left: 0;
   }
 
   /* Hide desktop submenu on mobile */

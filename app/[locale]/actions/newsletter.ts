@@ -5,6 +5,8 @@ import { newsletterSchema } from '@/lib/validations/newsletter';
 export type FormState = {
   error?: string;
   success?: boolean;
+  email?: string;
+  isFake?: boolean;
 } | null;
 
 export async function subscribeToNewsletter(
@@ -27,25 +29,18 @@ export async function subscribeToNewsletter(
   // 2. Get API token from environment variable
   const apiToken = process.env.MAILERLITE_API_TOKEN;
 
-  console.log('[Newsletter] API Token loaded:', apiToken ? 'YES (length: ' + apiToken.length + ')' : 'NO');
-
   if (!apiToken) {
-    console.error('MAILERLITE_API_TOKEN not configured');
     return {
       error: 'Configuration error. Please try again later.',
     };
   }
 
   // 3. Call MailerLite API
-  console.log('[Newsletter] Subscribing email:', email);
-
   try {
     const requestBody = {
       email,
       status: 'unconfirmed', // This triggers double opt-in email
     };
-
-    console.log('[Newsletter] Request body:', JSON.stringify(requestBody));
 
     const response = await fetch('https://connect.mailerlite.com/api/subscribers', {
       method: 'POST',
@@ -56,8 +51,6 @@ export async function subscribeToNewsletter(
       },
       body: JSON.stringify(requestBody),
     });
-
-    console.log('[Newsletter] Response status:', response.status, response.statusText);
 
     // 4. Handle MailerLite API responses
     if (!response.ok) {
@@ -81,7 +74,6 @@ export async function subscribeToNewsletter(
 
     // Log successful response
     const responseData = await response.json();
-    console.log('[Newsletter] Success! Response:', responseData);
 
     // 5. Success!
     return {
@@ -94,4 +86,29 @@ export async function subscribeToNewsletter(
       error: 'Network error. Please check your connection and try again.',
     };
   }
+}
+
+export async function subscribeToNewsletterFake(
+    prevState: FormState,
+    formData: FormData
+): Promise<FormState> {
+  // 1. Validate input using Zod
+  const validatedFields = newsletterSchema.safeParse({
+    email: formData.get('email'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      error: validatedFields.error.issues[0].message,
+    };
+  }
+
+  const { email } = validatedFields.data;
+
+  // 2. Return success with email and fake flag (alert will be shown on client side)
+  return {
+    success: true,
+    email,
+    isFake: true,
+  };
 }
