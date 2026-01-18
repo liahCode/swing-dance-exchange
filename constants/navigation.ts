@@ -26,7 +26,7 @@ export const MAIN_MENU: MenuItem[] = [
   },
   {
     labelKey: 'navigation.whatIs.label',
-    disabled: true,
+    disabled: false,
     submenu: [
       { labelKey: 'navigation.whatIs.lindyHop', href: '/what-is/lindy-hop' },
       { labelKey: 'navigation.whatIs.exchange', href: '/what-is/exchange' },
